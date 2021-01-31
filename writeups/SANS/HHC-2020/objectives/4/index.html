@@ -1,0 +1,832 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <meta name="author" content="Joe Ammond (pugpug)">
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.3">
+    
+    
+      
+        <title>Operate the Santavator - SANS HHC 2020 writeup</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.3b61ea93.min.css">
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../css/print.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#operate-the-santavator" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../.." title="SANS HHC 2020 writeup" class="md-header-nav__button md-logo" aria-label="SANS HHC 2020 writeup">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            SANS HHC 2020 writeup
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Operate the Santavator
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SANS HHC 2020 writeup" class="md-nav__button md-logo" aria-label="SANS HHC 2020 writeup">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    SANS HHC 2020 writeup
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="http://ammond.org" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../.." class="md-nav__link">
+      Welcome
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  
+
+
+  
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Objectives
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Objectives" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Objectives
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../1/" class="md-nav__link">
+      Uncover Santa's Gift List
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../2/" class="md-nav__link">
+      Investigate S3 Bucket
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../3/" class="md-nav__link">
+      Point-of-Sale Password Recovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Operate the Santavator
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
+      Operate the Santavator
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objective" class="md-nav__link">
+    Objective
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pepper-mintstix-dialog" class="md-nav__link">
+    Pepper Mintstix dialog:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparkle-redberrys-dialog" class="md-nav__link">
+    Sparkle Redberry's dialog:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#answer" class="md-nav__link">
+    Answer
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../5/" class="md-nav__link">
+      Open HID Lock
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../6/" class="md-nav__link">
+      Splunk Challenge
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../7/" class="md-nav__link">
+      Solve the Sleigh's CAN-D-BUS Problem
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../8/" class="md-nav__link">
+      Broken Tag Generator
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../9/" class="md-nav__link">
+      ARP Shenanigans
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../10/" class="md-nav__link">
+      Defeat Fingerprint Sensor
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../11a/" class="md-nav__link">
+      Naughty/Nice List with Blockchain Investigation Part 1
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../11b/" class="md-nav__link">
+      Naughty/Nice List with Blockchain Investigation Part 2
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  
+  <li class="md-nav__item md-nav__item--nested">
+    
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" >
+    
+    <label class="md-nav__link" for="nav-4">
+      Fun stuff
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Fun stuff" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        Fun stuff
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../../fun/portrait/" class="md-nav__link">
+      Santa's portrait poem
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../../fun/secret-garden/" class="md-nav__link">
+      The Secret Garden
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../../fun/nail/" class="md-nav__link">
+      The Nail
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../../conclusion/" class="md-nav__link">
+      Conclusion
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objective" class="md-nav__link">
+    Objective
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pepper-mintstix-dialog" class="md-nav__link">
+    Pepper Mintstix dialog:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparkle-redberrys-dialog" class="md-nav__link">
+    Sparkle Redberry's dialog:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#answer" class="md-nav__link">
+    Answer
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset"><a class="md-content__button md-icon" download href="4.pdf" title="PDF Export"><svg style="height: 1.2rem; width: 1.2rem;" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm76.45 211.36l-96.42 95.7c-6.65 6.61-17.39 6.61-24.04 0l-96.42-95.7C73.42 337.29 80.54 320 94.82 320H160v-80c0-8.84 7.16-16 16-16h32c8.84 0 16 7.16 16 16v80h65.18c14.28 0 21.4 17.29 11.27 27.36zM377 105L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9z"></path></svg></a>
+              
+                
+                
+                <h1 id="operate-the-santavator">Operate the Santavator<a class="headerlink" href="#operate-the-santavator" title="Permanent link">#</a></h1>
+<p>Our next objective is to fix and operate the <strong>Santavator</strong>, an elevator that gives access to additional floors in Kringle Castle.</p>
+<h2 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">#</a></h2>
+<blockquote>
+<p>Talk to Pepper Minstix in the entryway to get some hints about the Santavator.</p>
+</blockquote>
+<p><code>Difficulty: 2/5</code></p>
+<h2 id="pepper-mintstix-dialog">Pepper Mintstix dialog:<a class="headerlink" href="#pepper-mintstix-dialog" title="Permanent link">#</a></h2>
+<blockquote>
+<p>There's a Santavator that moves visitors from floor to floor, but it's a bit wonky.</br>
+You'll need a key and other odd objects. Try talking to Sparkle Redberry about the key.</br>
+For the odd objects, maybe just wander around the castle and see what you find on the floor.</br>
+Once you have a few, try using them to split, redirect, and color the Super Santavator Sparkle Stream (S4).</br>
+You need to power the red, yellow, and green receivers with the right color light!</br></p>
+</blockquote>
+<h2 id="sparkle-redberrys-dialog">Sparkle Redberry's dialog:<a class="headerlink" href="#sparkle-redberrys-dialog" title="Permanent link">#</a></h2>
+<blockquote>
+<p>Hey hey, Sparkle Redberry here!<br>
+The Santavator is on the fritz. Something with the wiring is grinchy, but maybe you can rig something up?<br>
+Here's the key! Good luck!<br>
+On another note, I heard Santa say that he was thinking of canceling KringleCon this year!<br>
+At first, I thought it was a joke, but he seemed serious. I’m glad he changed his mind.<br>
+Have you had a chance to look at the Santavator yet?<br>
+With that key, you can look under the panel and see the Super Santavator Sparkle Stream (S4).<br>
+To get to different floors, you'll need to power the various colored receivers.<br>
+... There MAY be a way to bypass the S4 stream.<br></p>
+</blockquote>
+<h2 id="hints">Hints<a class="headerlink" href="#hints" title="Permanent link">#</a></h2>
+<blockquote>
+<p>It's really more art than science. The goal is to put the right colored light into the receivers on the left and top of the panel.</br></p>
+</blockquote>
+<h2 id="solution">Solution<a class="headerlink" href="#solution" title="Permanent link">#</a></h2>
+<p>In the top-right corner of the courtyard you'll find the elf Sparkle Redberry standing next to the <strong>Santavator</strong>, a magic-powered elevator. He'll give you a key to open the operator panel in the Santavator:</p>
+<p><img alt="Initial panel of the Santavator" src="../../img/4/o4-1.png" /></p>
+<p>Also, in your wanderings around the castle, you've probably seen and picked up some random items laying on the floor (a candycane in the entryway of the castle, for example). Those items will be behind the operator panel, which opens by clicking on the key:</p>
+<p><img alt="Open Santavator panel" src="../../img/4/o4-2.png" /></p>
+<p>The legend in the bottom-right corner shows what color receiver needs to be "powered" for the button for that floor to be active. For example, powering the green receiver will allow access to the <strong>Lobby</strong> and the <strong>KringleCon Talks</strong> floors. The collected items can be dragged around to split, direct, and change the colors of the Sparkle Stream. For example, this configuration will power the green receiver:</p>
+<p><img alt="Powered green receiver in Santavator" src="../../img/4/o4-3.png" /></p>
+<p>Closing the panel with the Sparkle Stream in that configuration now allows access to floor 2 (KringleCon talks):</p>
+<p><img alt="KringleCon Talks floor open" src="../../img/4/o4-4.png" /></p>
+<p>Visiting any floor other than the Lobby will fulfill the objective. Eventually more objects can be found around the castle, and with much creative moving of objects, all the receiver can be powered:</p>
+<p><img alt="Every Santavator receiver powered" src="../../img/4/o4-5.png" /></p>
+<p>There is a simpler way, that doesn't involve any objects, splitting Sparkle streams, and powered receiver. The answer lies in the source code to the Santavator application, and why client-side security checks can be a bad idea.</p>
+<p>The application that controlls the Santavator is an embedded iframe in the browser window. The application source is at <a href="https://elevator.kringlecastle.com/app.js">https://elevator.kringlecastle.com/app.js</a>. Of interest are the following blocks of JavaScript:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">handleBtn</span> <span class="o">=</span> <span class="nx">event</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">targetFloor</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s1">&#39;data-floor&#39;</span><span class="p">].</span><span class="nx">value</span><span class="p">;</span>
+  <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+    <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="nx">POST_URL</span><span class="p">,</span>
+    <span class="nx">dataType</span><span class="o">:</span> <span class="s1">&#39;json&#39;</span><span class="p">,</span>
+    <span class="nx">contentType</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
+    <span class="nx">data</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+      <span class="nx">targetFloor</span><span class="p">,</span>
+      <span class="nx">id</span><span class="o">:</span> <span class="nx">getParams</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+    <span class="p">}),</span>
+    <span class="nx">success</span><span class="o">:</span> <span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">status</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">hash</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">__POST_RESULTS__</span><span class="p">({</span>
+          <span class="nx">resourceId</span><span class="o">:</span> <span class="nx">getParams</span><span class="p">.</span><span class="nx">id</span> <span class="o">||</span> <span class="s1">&#39;1111&#39;</span><span class="p">,</span>
+          <span class="nx">hash</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">hash</span><span class="p">,</span>
+          <span class="nx">action</span><span class="o">:</span> <span class="sb">`goToFloor-</span><span class="si">${</span><span class="nx">targetFloor</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span>
+        <span class="p">});</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">btn1</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;button[data-floor=&quot;1&quot;]&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">btn2</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;button[data-floor=&quot;1.5&quot;]&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">btn3</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;button[data-floor=&quot;2&quot;]&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">btn4</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;button[data-floor=&quot;3&quot;]&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">btnr</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;button[data-floor=&quot;r&quot;]&#39;</span><span class="p">);</span>
+
+<span class="nx">btn1</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">handleBtn</span><span class="p">);</span>
+<span class="nx">btn2</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">handleBtn</span><span class="p">);</span>
+<span class="nx">btn3</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">handleBtn</span><span class="p">);</span>
+<span class="nx">btn4</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">handleBtn4</span><span class="p">);</span>
+<span class="nx">btnr</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">handleBtn</span><span class="p">);</span>
+</code></pre></div>
+</td></tr></table>
+<p>The <code>handleBtn</code> function is called when any of the buttons are clicked on, with the appropriate floor data (ignoring <code>handleBtn4</code> for now). We can simulate a click on the button in the browser's JavaScript console using <code>btnX.click()</code>. Open the browsers <code>Developer Tools</code> menu and go to the <code>Console</code> tab (<code>Google Chrome</code> shown):</p>
+<p><img alt="Chrome Developer Console" src="../../img/4/o4-6.png" /></p>
+<p>Because the Santavator code is an iFrame, it runs in a separate JavaScrpt context from the main page. In Chrome, that context can be selected via the dropdown menu at the top-left of the tools:</p>
+<p><img alt="Chrome Dev console context menu" src="../../img/4/o4-7.png" /></p>
+<p>Switch the context to <code>elevator.kringlecastle.com</code>, and enter <code>btnX.click();</code> at the <code>&gt;</code> prompt. You'll be taken to the floor associated with the button.</p>
+<p><img alt="Chrome Dev console simulate button click" src="../../img/4/o4-8.png" /></p>
+<h2 id="answer">Answer<a class="headerlink" href="#answer" title="Permanent link">#</a></h2>
+<p>Visit any floor other than the Lobby to fulfill this objective.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../3/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Point-of-Sale Password Recovery
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../5/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Open HID Lock
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Joe Ammond - <a href="http://twitter.com/joeammond">@joeammond</a>
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/joeammond" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://www.linkedin.com/in/joeammond/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.08c56446.min.js"></script>
+      <script src="../../assets/javascripts/bundle.6ced434e.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.8c7e0a7e.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
