@@ -1,1 +1,1 @@
-Sitemap: http://ammond.org/sitemap.xml
+Sitemap: https://ammond.org/sitemap.xml
